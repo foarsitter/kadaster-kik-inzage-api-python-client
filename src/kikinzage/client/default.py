@@ -143,7 +143,7 @@ class DefaultClient(BaseClient):
         huisnummer: int,
         formaat: str,
         klantreferentie: str,
-        huisletter: str = None,
+        huisletter: Optional[str] = None,
         gebruikeridentificatie: Optional[str] = None,
         hyperlinkopproduct: Optional[bool] = None,
         inkoopnummer: Optional[str] = None,

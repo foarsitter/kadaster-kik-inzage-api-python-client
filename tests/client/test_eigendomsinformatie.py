@@ -95,7 +95,7 @@ def test_invalid_json(kik: DefaultClient, respx_mock: MockRouter) -> None:
         )
 
 
-def test_adres(kik: DefaultClient):
+def test_adres(kik: DefaultClient) -> None:
     response = kik.eigendomsinformatie_adres_get(
         plaatsnaam="Wernhout",
         straatnaam="Kleine Heistraat",
