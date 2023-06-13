@@ -19,11 +19,11 @@ def main() -> None:
 
 
 @main.group()
-@click.argument("filename", type=click.Path())
+@click.argument("filename", type=str)
 @click.pass_context
 def eigendomsinformatie(
     ctx: Context,
-    filename: Path,
+    filename: str,
 ) -> None:
     """Eigendomsinformatie."""
     ctx.ensure_object(dict)
@@ -34,7 +34,7 @@ def eigendomsinformatie(
 @eigendomsinformatie.command()
 @click.pass_context
 @click.argument("postcode", type=str)
-@click.argument("huisnummer", type=int)
+@click.argument("huisnummer", type=str)
 def postcode(ctx: Context, postcode: str, huisnummer: str) -> None:
     """Eigendomsinformatie - Postcode."""
 
