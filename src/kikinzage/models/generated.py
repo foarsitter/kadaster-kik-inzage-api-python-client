@@ -192,7 +192,7 @@ class Type(Enum):
 
 class PointGeoJSON(BaseModel):
     type: Type
-    coordinates: List[float] = Field(..., min_items=2)
+    coordinates: List[float] = Field(..., min_length=2)
 
 
 class ProcesVerwerking(BaseModel):
@@ -304,20 +304,20 @@ class ZakelijkRecht(BaseModel):
     aard: Optional[Waardelijst] = None
     toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
     is_gebaseerd_op: Optional[List[NEN3610ID]] = Field(
-        None, alias="isGebaseerdOp", min_items=0
+        None, alias="isGebaseerdOp", min_length=0
     )
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     rust_op: Optional[NEN3610ID] = Field(None, alias="rustOp")
     is_belast_met: Optional[List[NEN3610ID]] = Field(
-        None, alias="isBelastMet", min_items=0
+        None, alias="isBelastMet", min_length=0
     )
     is_ontstaan_uit: Optional[NEN3610ID] = Field(None, alias="isOntstaanUit")
     is_bestemd_tot: Optional[NEN3610ID] = Field(None, alias="isBestemdTot")
     is_betrokken_bij: Optional[NEN3610ID] = Field(None, alias="isBetrokkenBij")
     is_beperkt_tot: Optional[List[NEN3610ID]] = Field(
-        None, alias="isBeperktTot", min_items=0
+        None, alias="isBeperktTot", min_length=0
     )
 
 
@@ -345,13 +345,13 @@ class FieldPersoon(BaseModel):
     postlocatie: Optional[NEN3610ID] = None
     woonlocatie: Optional[NEN3610ID] = None
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     is_rechthebbende_van: Optional[List[NEN3610ID]] = Field(
-        None, alias="isRechthebbendeVan", min_items=0
+        None, alias="isRechthebbendeVan", min_length=0
     )
     is_betrokkene_bij: Optional[List[NEN3610ID]] = Field(
-        None, alias="isBetrokkeneBij", min_items=0
+        None, alias="isBetrokkeneBij", min_length=0
     )
 
 
@@ -371,7 +371,7 @@ class FieldZekerheidsstelling(BaseModel):
     toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
     is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     rust_op_object: Optional[NEN3610ID] = Field(None, alias="rustOpObject")
     heeft: Optional[List[NEN3610ID]] = None
@@ -393,14 +393,14 @@ class Aantekening(BaseModel):
         None, alias="aantekeningKadastraalObject"
     )
     aantekening_recht: Optional[List[NEN3610ID]] = Field(
-        None, alias="aantekeningRecht", min_items=0
+        None, alias="aantekeningRecht", min_length=0
     )
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
     betrokken_persoon: Optional[List[NEN3610ID]] = Field(
-        None, alias="betrokkenPersoon", min_items=0
+        None, alias="betrokkenPersoon", min_length=0
     )
 
 
@@ -422,7 +422,7 @@ class AppartementsrechtSplitsing(BaseModel):
     identificatie: Optional[NEN3610ID] = None
     type: Optional[AppartementsrechtSplitsingTypeEnum] = None
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     heeft_vereniging_van_eigenaren: Optional[NEN3610ID] = Field(
         None, alias="heeftVerenigingVanEigenaren"
@@ -550,7 +550,7 @@ class LocatieKadastraalObject(BaseModel):
 class Mandeligheid(BaseModel):
     identificatie: Optional[NEN3610ID] = None
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     is_gebaseerd_op: Optional[List[NEN3610ID]] = Field(None, alias="isGebaseerdOp")
     heeft_hoofdzaak: Optional[List[NEN3610ID]] = Field(None, alias="heeftHoofdzaak")
@@ -643,7 +643,7 @@ class Stukdeel(BaseModel):
         None, alias="omschrijvingGekozenWoonplaats"
     )
     is_aanvulling_op: Optional[List[NEN3610ID]] = Field(
-        None, alias="isAanvullingOp", min_items=0
+        None, alias="isAanvullingOp", min_length=0
     )
     bedrag_vorderingsbeslag: Optional[Bedrag] = Field(
         None, alias="bedragVorderingsbeslag"
@@ -666,7 +666,7 @@ class Tenaamstelling(BaseModel):
     betrokken_partner: Optional[NEN3610ID] = Field(None, alias="betrokkenPartner")
     geldt_voor: Optional[NEN3610ID] = Field(None, alias="geldtVoor")
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     betrokken_samenwerkingsverband: Optional[NEN3610ID] = Field(
         None, alias="betrokkenSamenwerkingsverband"
@@ -734,14 +734,14 @@ class FieldOnroerendeZaak(FieldKadastraalObject):
     )
     koopsom: Optional[TypeKoopsom] = None
     landinrichtingsrente: Optional[List[TypeLandinrichtingsrente]] = Field(
-        None, min_items=0
+        None, min_length=0
     )
     toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
     ontstaan_uit_oz: Optional[List[OnroerendeZaakFiliatie]] = Field(
-        None, alias="ontstaanUitOZ", min_items=0
+        None, alias="ontstaanUitOZ", min_length=0
     )
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
     overgegaan_in: Optional[List[VoorwaartseOnroerendeZaakFiliatie]] = Field(
         None, alias="overgegaanIn"
@@ -807,7 +807,7 @@ class Erfpachtcanon(BaseModel):
     betreft: Optional[NEN3610ID] = None
     is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
     is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_items=0
+        None, alias="isVermeldIn", min_length=0
     )
 
 
