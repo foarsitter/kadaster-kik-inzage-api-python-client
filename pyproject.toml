@@ -19,17 +19,18 @@ classifiers = [
 Changelog = "https://github.com/foarsitter/kadaster-kik-inzage-api-python-client/releases"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = "^3.8.1"
 click = ">=8.0.1"
 pydantic = ">=2.0a1"
+httpx = "^0.24.1"
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev.dependencies]
 Pygments = ">=2.10.0"
 bandit = ">=1.7.4"
 black = ">=21.10b0"
-coverage = {extras = ["toml"], version = ">=6.2"}
+coverage = { extras = ["toml"], version = ">=6.2" }
 darglint = ">=1.8.1"
-flake8 = ">=4.0.1"
+flake8 = ">=6.0.0"
 flake8-bugbear = ">=21.9.2"
 flake8-docstrings = ">=1.6.0"
 flake8-rst-docstrings = ">=0.2.5"
@@ -46,11 +47,13 @@ sphinx = ">=4.3.2"
 sphinx-autobuild = ">=2021.3.14"
 sphinx-click = ">=3.0.2"
 typeguard = ">=2.13.3"
-xdoctest = {extras = ["colors"], version = ">=0.15.10"}
-myst-parser = {version = ">=0.16.1"}
+xdoctest = { extras = ["colors"], version = ">=0.15.10" }
+myst-parser = { version = ">=0.16.1" }
+respx = "^0.20.1"
 
 [tool.poetry.scripts]
-kadaster-kik-inzage-api-python-client = "kikinzage.__main__:main"
+kikinzage = "kikinzage.__main__:main"
+
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
