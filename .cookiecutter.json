@@ -1,0 +1,14 @@
+{
+  "_output_dir": "/home/jelmert/PycharmProjects",
+  "_template": "gh:cjolowicz/cookiecutter-hypermodern-python",
+  "author": "Jelmer Draaijer",
+  "copyright_year": "2023",
+  "development_status": "Development Status :: 4 - Beta",
+  "email": "info@jelmert.nl",
+  "friendly_name": " Kadaster - KIK Inzage API Python client",
+  "github_user": "foarsitter",
+  "license": "MIT",
+  "package_name": "kikinzage",
+  "project_name": "kadaster-kik-inzage-api-python-client",
+  "version": "0.1.0"
+}
