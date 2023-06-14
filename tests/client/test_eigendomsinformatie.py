@@ -37,21 +37,22 @@ def test_postcode(kik: DefaultClient) -> None:
 
 @pytest.mark.asyncio
 async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
-    response = await akik.eigendomsinformatie_kadastraalobjectidentificatie_get(
-        kadastraalobjectidentificatie="11010156070000",
-        formaat=Formaat.JSON,
-        klantreferentie="onbekend",
-    )
+    async with akik as kik:
+        response = await kik.eigendomsinformatie_kadastraalobjectidentificatie(
+            kadastraalobjectidentificatie="11010156070000",
+            formaat=Formaat.JSON,
+            klantreferentie="onbekend",
+        )
 
-    assert response.product_gegevens
-    assert response.proces
-    assert response.proces.meldingen is not None
-    assert len(response.proces.meldingen) > 0
-    assert response.proces.meldingen[0].severity_code == SeverityCode.INFO
-    assert (
-        response.proces.meldingen[0].omschrijving
-        == "Gevraagde product is succesvol geleverd."
-    )
+        assert response.product_gegevens
+        assert response.proces
+        assert response.proces.meldingen is not None
+        assert len(response.proces.meldingen) > 0
+        assert response.proces.meldingen[0].severity_code == SeverityCode.INFO
+        assert (
+            response.proces.meldingen[0].omschrijving
+            == "Gevraagde product is succesvol geleverd."
+        )
 
 
 def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:

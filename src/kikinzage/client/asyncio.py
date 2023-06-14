@@ -1,3 +1,4 @@
+from types import TracebackType
 from typing import Any
 from typing import Optional
 from typing import Type
@@ -84,3 +85,15 @@ class AsyncClient(KikinzageBaseClient):
         response = await self.client.send(request)
 
         return self.process_response(response, model, status_code_success)
+
+    async def __aenter__(self) -> "AsyncClient":
+        await self.client.__aenter__()
+        return self
+
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]] = None,
+        exc_value: Optional[BaseException] = None,
+        traceback: Optional[TracebackType] = None,
+    ) -> None:
+        await self.client.__aexit__(exc_type, exc_value, traceback)
