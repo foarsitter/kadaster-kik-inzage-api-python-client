@@ -1,5 +1,4 @@
 from typing import Any
-from typing import Literal
 from typing import Optional
 from typing import Type
 from typing import Union
@@ -12,10 +11,6 @@ from .. import models
 from ..models import Formaat
 from ..models import ResponseType
 from .base import KikinzageBaseClient
-
-
-FormaatDefault: Literal["FormaatFormaatDefault"] = "FormaatFormaatDefault"
-Klantreferentie: Literal["Klantreferentie"] = "Klantreferentie"
 
 
 class AsyncClient(KikinzageBaseClient):
