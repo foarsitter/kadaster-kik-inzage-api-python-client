@@ -48,7 +48,7 @@ def postcode(ctx: Context, postcode: str, huisnummer: str) -> None:
         event_hooks={"response": [log_response]},
     )
 
-    kik.eigendomsinformatie_postcode_get(
+    kik.eigendomsinformatie_postcode(
         postcode=postcode,
         huisnummer=huisnummer,
         formaat=Formaat.JSON,

@@ -51,7 +51,7 @@ class DefaultClient(KikinzageBaseClient):
     def create_client(self, **httpx_kwargs: Any) -> httpx.Client:
         return httpx.Client(**httpx_kwargs)
 
-    def eigendomsinformatie_kadastraalobjectidentificatie_get(
+    def eigendomsinformatie_kadastraalobjectidentificatie(
         self,
         kadastraalobjectidentificatie: str,
         formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
@@ -75,7 +75,7 @@ class DefaultClient(KikinzageBaseClient):
 
         return self.send(request, models.Eigendomsinformatie)
 
-    def eigendomsinformatie_kadastraleaanduiding_get(
+    def eigendomsinformatie_kadastraleaanduiding(
         self,
         kadastralegemeente: str,
         sectie: str,
@@ -103,7 +103,7 @@ class DefaultClient(KikinzageBaseClient):
 
         return self.send(request, models.Eigendomsinformatie)
 
-    def eigendomsinformatie_postcode_get(
+    def eigendomsinformatie_postcode(
         self,
         postcode: str,
         huisnummer: str,
@@ -132,7 +132,7 @@ class DefaultClient(KikinzageBaseClient):
 
         return self.send(request, models.Eigendomsinformatie)
 
-    def eigendomsinformatie_adres_get(
+    def eigendomsinformatie_adres(
         self,
         plaatsnaam: str,
         straatnaam: str,

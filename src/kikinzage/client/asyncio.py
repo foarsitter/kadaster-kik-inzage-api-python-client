@@ -51,7 +51,7 @@ class AsyncClient(KikinzageBaseClient):
     def create_client(self, **httpx_kwargs: Any) -> httpx.AsyncClient:
         return httpx.AsyncClient(**httpx_kwargs)
 
-    async def eigendomsinformatie_kadastraalobjectidentificatie_get(
+    async def eigendomsinformatie_kadastraalobjectidentificatie(
         self,
         kadastraalobjectidentificatie: str,
         formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,

@@ -14,7 +14,7 @@ def test_401() -> None:
     kik = DefaultClient(username="", password="")  # nosec
 
     with pytest.raises(KIKAuthenticationError):
-        kik.eigendomsinformatie_kadastraalobjectidentificatie_get(
+        kik.eigendomsinformatie_kadastraalobjectidentificatie(
             kadastraalobjectidentificatie="",
             formaat=Formaat.JSON,
             klantreferentie="onbekend",
@@ -22,7 +22,7 @@ def test_401() -> None:
 
 
 def test_postcode(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_postcode_get(
+    response = kik.eigendomsinformatie_postcode(
         postcode="4884ME",
         huisnummer="16",
         formaat=Formaat.JSON,
@@ -55,7 +55,7 @@ async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
 
 
 def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_kadastraalobjectidentificatie_get(
+    response = kik.eigendomsinformatie_kadastraalobjectidentificatie(
         kadastraalobjectidentificatie="11010156070000",
         formaat=Formaat.JSON,
         klantreferentie="onbekend",
@@ -73,7 +73,7 @@ def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
 
 
 def test_kadastraleaanduiding(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_kadastraleaanduiding_get(
+    response = kik.eigendomsinformatie_kadastraleaanduiding(
         kadastralegemeente="Zundert",
         sectie="T",
         perceelnummer=1560,
@@ -109,7 +109,7 @@ def test_kadastraleaanduiding(kik: DefaultClient) -> None:
 def test_invalid_json(kik: DefaultClient, respx_mock: MockRouter) -> None:
     respx_mock.get() % httpx.Response(200, content="this is not valid")
     with pytest.raises(errors.KIKRequestError):
-        kik.eigendomsinformatie_kadastraalobjectidentificatie_get(
+        kik.eigendomsinformatie_kadastraalobjectidentificatie(
             kadastraalobjectidentificatie="11010156070000",
             formaat=Formaat.JSON,
             klantreferentie="onbekend",
@@ -117,7 +117,7 @@ def test_invalid_json(kik: DefaultClient, respx_mock: MockRouter) -> None:
 
 
 def test_adres(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_adres_get(
+    response = kik.eigendomsinformatie_adres(
         plaatsnaam="Wernhout",
         straatnaam="Kleine Heistraat",
         huisnummer=16,
