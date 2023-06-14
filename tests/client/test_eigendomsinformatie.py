@@ -2,9 +2,11 @@ import httpx
 import pytest
 from respx import MockRouter
 
+from kikinzage.client import AsyncClient
 from kikinzage.client import errors
 from kikinzage.client.default import DefaultClient
 from kikinzage.client.errors import KIKAuthenticationError
+from kikinzage.models import Formaat
 from kikinzage.models import SeverityCode
 
 
@@ -14,7 +16,7 @@ def test_401() -> None:
     with pytest.raises(KIKAuthenticationError):
         kik.eigendomsinformatie_kadastraalobjectidentificatie_get(
             kadastraalobjectidentificatie="",
-            formaat="json",
+            formaat=Formaat.JSON,
             klantreferentie="onbekend",
         )
 
@@ -23,7 +25,7 @@ def test_postcode(kik: DefaultClient) -> None:
     response = kik.eigendomsinformatie_postcode_get(
         postcode="4884ME",
         huisnummer="16",
-        formaat="json",
+        formaat=Formaat.JSON,
         klantreferentie="onbekend",
         huisnummertoevoeging="K298",
     )
@@ -33,10 +35,29 @@ def test_postcode(kik: DefaultClient) -> None:
     assert response.product_gegevens.klantreferentie == "onbekend"
 
 
+@pytest.mark.asyncio
+async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
+    response = await akik.eigendomsinformatie_kadastraalobjectidentificatie_get(
+        kadastraalobjectidentificatie="11010156070000",
+        formaat=Formaat.JSON,
+        klantreferentie="onbekend",
+    )
+
+    assert response.product_gegevens
+    assert response.proces
+    assert response.proces.meldingen is not None
+    assert len(response.proces.meldingen) > 0
+    assert response.proces.meldingen[0].severity_code == SeverityCode.INFO
+    assert (
+        response.proces.meldingen[0].omschrijving
+        == "Gevraagde product is succesvol geleverd."
+    )
+
+
 def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
     response = kik.eigendomsinformatie_kadastraalobjectidentificatie_get(
         kadastraalobjectidentificatie="11010156070000",
-        formaat="json",
+        formaat=Formaat.JSON,
         klantreferentie="onbekend",
     )
 
@@ -56,7 +77,7 @@ def test_kadastraleaanduiding(kik: DefaultClient) -> None:
         kadastralegemeente="Zundert",
         sectie="T",
         perceelnummer=1560,
-        formaat="json",
+        formaat=Formaat.JSON,
         klantreferentie="onbekend",
     )
 
@@ -87,10 +108,10 @@ def test_kadastraleaanduiding(kik: DefaultClient) -> None:
 
 def test_invalid_json(kik: DefaultClient, respx_mock: MockRouter) -> None:
     respx_mock.get() % httpx.Response(200, content="this is not valid")
-    with pytest.raises(errors.KIKError):
+    with pytest.raises(errors.KIKRequestError):
         kik.eigendomsinformatie_kadastraalobjectidentificatie_get(
             kadastraalobjectidentificatie="11010156070000",
-            formaat="json",
+            formaat=Formaat.JSON,
             klantreferentie="onbekend",
         )
 
@@ -100,7 +121,7 @@ def test_adres(kik: DefaultClient) -> None:
         plaatsnaam="Wernhout",
         straatnaam="Kleine Heistraat",
         huisnummer=16,
-        formaat="json",
+        formaat=Formaat.JSON,
         klantreferentie="onbekend",
     )
 
