@@ -10,6 +10,7 @@ from click import Context
 
 from kikinzage.client import DefaultClient
 from kikinzage.client import RequestFixtures
+from kikinzage.models import Formaat
 
 
 @click.group()
@@ -50,7 +51,7 @@ def postcode(ctx: Context, postcode: str, huisnummer: str) -> None:
     kik.eigendomsinformatie_postcode_get(
         postcode=postcode,
         huisnummer=huisnummer,
-        formaat="json",
+        formaat=Formaat.JSON,
         klantreferentie="onbekend",
     )
 

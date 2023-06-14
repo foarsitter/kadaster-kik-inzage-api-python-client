@@ -49,6 +49,7 @@ typeguard = ">=2.13.3"
 xdoctest = { extras = ["colors"], version = ">=0.15.10" }
 myst-parser = { version = ">=0.16.1" }
 respx = ">=0.20.1"
+pytest-asyncio = "^0.21.0"
 
 [tool.poetry.scripts]
 kikinzage = "kikinzage.__main__:main"

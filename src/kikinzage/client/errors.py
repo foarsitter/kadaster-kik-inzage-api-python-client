@@ -4,6 +4,10 @@ from typing import Optional
 
 
 class KIKError(Exception):
+    """Base exception for all KIKinzage errors"""
+
+
+class KIKRequestError(KIKError):
     def __init__(
         self, message: str, status_code: int, json: Optional[Dict[str, Any]] = None
     ):
@@ -12,17 +16,17 @@ class KIKError(Exception):
         self.status_code = status_code
 
 
-class KIKValidationError(KIKError):
+class KIKValidationError(KIKRequestError):
     pass
 
 
-class KIKAuthenticationError(KIKError):
+class KIKAuthenticationError(KIKRequestError):
     pass
 
 
-class KIKNotFoundError(KIKError):
+class KIKNotFoundError(KIKRequestError):
     pass
 
 
-class KIKServerError(KIKError):
+class KIKServerError(KIKRequestError):
     pass
