@@ -33,6 +33,24 @@ def test_postcode(kik: DefaultClient) -> None:
     assert response.proces.severity_code == SeverityCode.INFO
     assert response.product_gegevens
     assert response.product_gegevens.klantreferentie == "onbekend"
+    assert response.geleverd_product.pdf is None
+
+
+def test_postcode_pdf(kik: DefaultClient) -> None:
+    response = kik.eigendomsinformatie_postcode(
+        postcode="4884ME",
+        huisnummer="16",
+        formaat=Formaat.PDF,
+        klantreferentie="onbekend",
+        huisnummertoevoeging="K298",
+    )
+    assert response.proces
+    assert response.proces.severity_code == SeverityCode.INFO
+    assert response.product_gegevens
+    assert response.product_gegevens.klantreferentie == "onbekend"
+
+    assert response.geleverd_product
+    assert response.geleverd_product.pdf is not None
 
 
 @pytest.mark.asyncio
