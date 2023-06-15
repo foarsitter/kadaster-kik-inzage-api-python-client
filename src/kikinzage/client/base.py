@@ -12,8 +12,8 @@ from httpx import Request
 from httpx._client import BaseClient
 from httpx._client import UseClientDefault
 
-from ..models import Formaat
 from ..models import ResponseType
+from ..models.enum import Formaat
 from . import errors
 from .utils import kwargs_as_params
 

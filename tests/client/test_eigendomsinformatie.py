@@ -31,8 +31,10 @@ def test_postcode(kik: DefaultClient) -> None:
     )
     assert response.proces
     assert response.proces.severity_code == SeverityCode.INFO
+
     assert response.product_gegevens
     assert response.product_gegevens.klantreferentie == "onbekend"
+    assert response.geleverd_product
     assert response.geleverd_product.pdf is None
 
 
@@ -46,6 +48,7 @@ def test_postcode_pdf(kik: DefaultClient) -> None:
     )
     assert response.proces
     assert response.proces.severity_code == SeverityCode.INFO
+
     assert response.product_gegevens
     assert response.product_gegevens.klantreferentie == "onbekend"
 

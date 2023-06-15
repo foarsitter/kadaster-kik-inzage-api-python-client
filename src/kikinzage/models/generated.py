@@ -2,9 +2,7 @@
 #   filename:  https://developer.kadaster.nl/schemas/kik-inzage/6.0.x/openapi.yaml
 #   timestamp: 2023-06-13T15:07:50+00:00
 
-from datetime import date
 from datetime import datetime
-from enum import Enum
 from typing import List
 from typing import Optional
 
@@ -13,22 +11,36 @@ from pydantic import BaseModel
 from pydantic import Field
 from pydantic import RootModel
 
-
-class AdresLocatieTypeEnum(Enum):
-    OBJECTLOCATIE_BINNENLAND = "ObjectlocatieBinnenland"
-    OBJECTLOCATIE_BUITENLAND = "ObjectlocatieBuitenland"
-    POSTBUS_LOCATIE = "PostbusLocatie"
+from kikinzage.models.collectie import Collectie
+from kikinzage.models.collectie import EigendomsinformatieProduct
+from kikinzage.models.collectie import FieldAdresLocatie
+from kikinzage.models.collectie import FieldOnroerendeZaak
+from kikinzage.models.collectie import GevraagdGebied
+from kikinzage.models.collectie import HPICollectie
+from kikinzage.models.collectie import LocatieKadastraalObject
+from kikinzage.models.collectie import OICollectie
+from kikinzage.models.collectie import OLPCollectie
+from kikinzage.models.collectie import PTCollectie
+from kikinzage.models.eigendomsinformatie import AppartementsrechtSplitsing
+from kikinzage.models.eigendomsinformatie import Beperkingsgebied
+from kikinzage.models.eigendomsinformatie import Erfpachtcanon
+from kikinzage.models.eigendomsinformatie import GezamenlijkAandeel
+from kikinzage.models.eigendomsinformatie import Herverkavelingsgebied
+from kikinzage.models.eigendomsinformatie import Mandeligheid
+from kikinzage.models.eigendomsinformatie import PubliekrechtelijkeBeperking
+from kikinzage.models.eigendomsinformatie import Tenaamstelling
+from kikinzage.models.eigendomsinformatie import VerkavelObject
+from kikinzage.models.eigendomsinformatie import ZakelijkRecht
+from kikinzage.models.enum import Formaat
+from kikinzage.models.enum import SeverityCode
+from kikinzage.models.misc import NEN3610ID
+from kikinzage.models.misc import PointGeoJSON
+from kikinzage.models.misc import Waardelijst
+from kikinzage.models.product import Product
 
 
 class Adresnummer(RootModel[str]):
     root: str = Field(..., title="Adresnummer")
-
-
-class AppartementsrechtSplitsingTypeEnum(Enum):
-    HOOFSPLITSING = "Hoofsplitsing"
-    ONDERSPLITSING = "Ondersplitsing"
-    SPIEGELSPLITSING_ONDERSPLITSING = "SpiegelsplitsingOndersplitsing"
-    SPIEGELSPLITSING_AFKOOP_ERFPACHT = "SpiegelsplitsingAfkoopErfpacht"
 
 
 class DatuminformatieProduct(BaseModel):
@@ -59,13 +71,6 @@ class DownloadGegevens(BaseModel):
     afgifte_id: Optional[str] = Field(None, alias="afgifteId")
 
 
-class Formaat(Enum):
-    JSON = "json"
-    PDF = "pdf"
-    JSON_PDF = "json,pdf"
-    PDF_JSON = "pdf,json"
-
-
 class Foutbericht(BaseModel):
     type: Optional[AnyUrl] = Field(
         None, description="Link naar meer informatie over deze fout"
@@ -92,13 +97,6 @@ class InvalidParam(BaseModel):
     )
 
 
-class SeverityCode(Enum):
-    INFO = "INFO"
-    WARNING = "WARNING"
-    ERROR = "ERROR"
-    FATAL = "FATAL"
-
-
 class Melding(BaseModel):
     code: Optional[str] = None
     omschrijving: Optional[str] = None
@@ -108,12 +106,6 @@ class Melding(BaseModel):
 class MeldingProduct(BaseModel):
     nummer: Optional[str] = None
     tekst: Optional[str] = None
-
-
-class Naam(BaseModel):
-    geslachtsnaam: Optional[str] = Field(None, max_length=200, min_length=1)
-    voornamen: Optional[str] = Field(None, max_length=200, min_length=1)
-    voorvoegselsgeslachtsnaam: Optional[str] = Field(None, max_length=10, min_length=1)
 
 
 class NegatieveMededelingProduct(BaseModel):
@@ -142,31 +134,6 @@ class NegatieveMededelingProduct(BaseModel):
     )
 
 
-class NEN3610ID(BaseModel):
-    lokaal_id: str = Field(..., alias="lokaalID")
-    namespace: str
-
-
-class ObjectReferentieType(Enum):
-    BAG = "BAG"
-    BGT = "BGT"
-
-
-class OnroerendeZaakBeperking(BaseModel):
-    in_onderzoek: Optional[bool] = Field(None, alias="inOnderzoek")
-    beperkt: Optional[NEN3610ID] = None
-
-
-class OnroerendeZaakFiliatie(BaseModel):
-    betreft_oz: Optional[NEN3610ID] = Field(None, alias="betreftOZ")
-
-
-class OnroerendeZaakTypeEnum(Enum):
-    PERCEEL = "Perceel"
-    APPARTEMENTSRECHT = "Appartementsrecht"
-    LEIDINGNETWERK = "Leidingnetwerk"
-
-
 class OpenbareRuimte(BaseModel):
     openbare_ruimte_naam: Optional[str] = Field(
         None, alias="openbareRuimteNaam", max_length=80, min_length=1
@@ -174,25 +141,6 @@ class OpenbareRuimte(BaseModel):
     gerelateerde_woonplaats_naam: Optional[str] = Field(
         None, alias="gerelateerdeWoonplaatsNaam", max_length=80, min_length=1
     )
-
-
-class OverigBetrokkenKadastraalObject(BaseModel):
-    betreft: Optional[NEN3610ID] = None
-    heeft: Optional[NEN3610ID] = None
-
-
-class PersoonTypeEnum(Enum):
-    NATUURLIJK_PERSOON = "NatuurlijkPersoon"
-    NIET_NATUURLIJK_PERSOON = "NietNatuurlijkPersoon"
-
-
-class Type(Enum):
-    POINT = "Point"
-
-
-class PointGeoJSON(BaseModel):
-    type: Type
-    coordinates: List[float] = Field(..., min_length=2)
 
 
 class ProcesVerwerking(BaseModel):
@@ -216,198 +164,13 @@ class ProductGegevens(BaseModel):
     )
 
 
-class Product(BaseModel):
-    actualiteitstijdstip_hypothecair: Optional[datetime] = Field(
-        None, alias="actualiteitstijdstipHypothecair"
-    )
-    actualiteitstijdstip_kadastraal: Optional[datetime] = Field(
-        None, alias="actualiteitstijdstipKadastraal"
-    )
-    klantreferentie: Optional[str] = Field(None, title="klantreferentie")
-    productieordernummer: Optional[str] = Field(None, title="productieordernummer")
-    signaleringstijdstip_beslagen: Optional[datetime] = Field(
-        None, alias="signaleringstijdstipBeslagen"
-    )
-    signaleringstijdstip_hypothecair: Optional[datetime] = Field(
-        None, alias="signaleringstijdstipHypothecair"
-    )
-    signaleringstijdstip_kadastraal: Optional[datetime] = Field(
-        None, alias="signaleringstijdstipKadastraal"
-    )
-    tijdstip_samenstelling_bericht: Optional[datetime] = Field(
-        None, alias="tijdstipSamenstellingBericht"
-    )
-    betreft: Optional[NEN3610ID] = None
-
-
-class Rechtspersoon(BaseModel):
-    kvk_nummer: Optional[str] = Field(None, alias="kvkNummer", max_length=8)
-
-
-class SignaleringKadastraalObject(BaseModel):
-    ten_behoeve_van: Optional[List[NEN3610ID]] = Field(None, alias="tenBehoeveVan")
-    van: Optional[NEN3610ID] = None
-
-
 class SignaleringPersoon(BaseModel):
     ten_behoeve_van: Optional[List[NEN3610ID]] = Field(None, alias="tenBehoeveVan")
     van: Optional[NEN3610ID] = None
 
 
-class StukTypeEnum(Enum):
-    TER_INSCHRIJVING_AANGEBODEN_STUK = "TerInschrijvingAangebodenStuk"
-    KADASTERSTUK = "Kadasterstuk"
-
-
-class Tijdstip(BaseModel):
-    datum: date
-    tijd: datetime
-
-
-class TypeBreuk(BaseModel):
-    noemer: Optional[int] = None
-    teller: Optional[int] = None
-
-
-class TypeOnvolledigeDatum(BaseModel):
-    dag: Optional[int] = Field(None, ge=1, le=31)
-    datum: Optional[date] = None
-    jaar: Optional[int] = Field(None, le=9999)
-    maand: Optional[int] = Field(None, ge=1, le=12)
-
-
 class TypePostcode(RootModel[str]):
     root: str = Field(..., title="TypePostcode")
-
-
-class Verblijfsobject(BaseModel):
-    identificatie: Optional[str] = None
-    hoofdadres: Optional[NEN3610ID] = None
-
-
-class VerkavelObject(BaseModel):
-    betreft: Optional[NEN3610ID] = None
-    ligt_in: Optional[NEN3610ID] = Field(None, alias="ligtIn")
-
-
-class VoorwaartseOnroerendeZaakFiliatie(BaseModel):
-    betreft_oz: Optional[NEN3610ID] = Field(None, alias="betreftOZ")
-
-
-class Waardelijst(BaseModel):
-    code: str
-    waarde: Optional[str] = None
-
-
-class ZakelijkRecht(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    aard: Optional[Waardelijst] = None
-    toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
-    is_gebaseerd_op: Optional[List[NEN3610ID]] = Field(
-        None, alias="isGebaseerdOp", min_length=0
-    )
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    rust_op: Optional[NEN3610ID] = Field(None, alias="rustOp")
-    is_belast_met: Optional[List[NEN3610ID]] = Field(
-        None, alias="isBelastMet", min_length=0
-    )
-    is_ontstaan_uit: Optional[NEN3610ID] = Field(None, alias="isOntstaanUit")
-    is_bestemd_tot: Optional[NEN3610ID] = Field(None, alias="isBestemdTot")
-    is_betrokken_bij: Optional[NEN3610ID] = Field(None, alias="isBetrokkenBij")
-    is_beperkt_tot: Optional[List[NEN3610ID]] = Field(
-        None, alias="isBeperktTot", min_length=0
-    )
-
-
-class ZekerheidsstellingTypeEnum(Enum):
-    ZEKERHEIDSSTELLING_HYPOTHECAIR = "ZekerheidsstellingHypothecair"
-    ZEKERHEIDSSTELLING_INZAKE_BESLAG = "ZekerheidsstellingInzakeBeslag"
-
-
-class FieldAdresLocatie(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[AdresLocatieTypeEnum] = None
-
-
-class FieldKadastraalObject(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-
-
-class FieldPersoon(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[PersoonTypeEnum] = None
-    beschikkingsbevoegdheid: Optional[Waardelijst] = None
-    indicatie_niet_toonbare_diakriet: Optional[bool] = Field(
-        None, alias="indicatieNietToonbareDiakriet"
-    )
-    postlocatie: Optional[NEN3610ID] = None
-    woonlocatie: Optional[NEN3610ID] = None
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    is_rechthebbende_van: Optional[List[NEN3610ID]] = Field(
-        None, alias="isRechthebbendeVan", min_length=0
-    )
-    is_betrokkene_bij: Optional[List[NEN3610ID]] = Field(
-        None, alias="isBetrokkeneBij", min_length=0
-    )
-
-
-class FieldStuk(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[StukTypeEnum] = None
-    toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
-    omvat: Optional[List[NEN3610ID]] = None
-
-
-class FieldZekerheidsstelling(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[ZekerheidsstellingTypeEnum] = None
-    omschrijving_betrokken_recht: Optional[Waardelijst] = Field(
-        None, alias="omschrijvingBetrokkenRecht"
-    )
-    toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
-    is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    rust_op_object: Optional[NEN3610ID] = Field(None, alias="rustOpObject")
-    heeft: Optional[List[NEN3610ID]] = None
-    heeft_meer_overig_betrokken_kadastraal_objecten: Optional[bool] = Field(
-        None, alias="heeftMeerOverigBetrokkenKadastraalObjecten"
-    )
-
-
-class Aantekening(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    aard: Optional[Waardelijst] = None
-    betreft_gedeelte_van_perceel: Optional[bool] = Field(
-        None, alias="betreftGedeelteVanPerceel"
-    )
-    einddatum: Optional[datetime] = None
-    einddatum_recht: Optional[datetime] = Field(None, alias="einddatumRecht")
-    omschrijving: Optional[str] = None
-    aantekening_kadastraal_object: Optional[NEN3610ID] = Field(
-        None, alias="aantekeningKadastraalObject"
-    )
-    aantekening_recht: Optional[List[NEN3610ID]] = Field(
-        None, alias="aantekeningRecht", min_length=0
-    )
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
-    betrokken_persoon: Optional[List[NEN3610ID]] = Field(
-        None, alias="betrokkenPersoon", min_length=0
-    )
-
-
-class AanvullendeGegevens(BaseModel):
-    bij_identificatie: Optional[NEN3610ID] = Field(None, alias="bijIdentificatie")
-    soort: Optional[str] = None
-    gegevens: Optional[str] = None
 
 
 class AdresBuitenland(BaseModel):
@@ -418,35 +181,11 @@ class AdresBuitenland(BaseModel):
     woonplaats: Optional[str] = Field(None, max_length=80, min_length=1)
 
 
-class AppartementsrechtSplitsing(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[AppartementsrechtSplitsingTypeEnum] = None
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    heeft_vereniging_van_eigenaren: Optional[NEN3610ID] = Field(
-        None, alias="heeftVerenigingVanEigenaren"
-    )
-    is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
-
-
-class AttenderingKadastraalObject(BaseModel):
-    van: Optional[NEN3610ID] = None
-    ten_behoeve_van: Optional[List[NEN3610ID]] = Field(
-        None, alias="tenBehoeveVan", title="tenBehoeveVan"
-    )
-
-
 class AttenderingPersoon(BaseModel):
     van: Optional[NEN3610ID] = None
     ten_behoeve_van: Optional[List[NEN3610ID]] = Field(
         None, alias="tenBehoeveVan", title="tenBehoeveVan"
     )
-
-
-class Bedrag(BaseModel):
-    som: Optional[float] = None
-    valuta: Optional[Waardelijst] = None
 
 
 class Brondocument(BaseModel):
@@ -483,53 +222,11 @@ class FoutberichtBadRequest(Foutbericht):
     )
 
 
-class Geboorte(BaseModel):
-    geboortedatum: Optional[TypeOnvolledigeDatum] = None
-    geboorteland: Optional[Waardelijst] = None
-    geboorteplaats: Optional[str] = Field(None, max_length=80, min_length=1)
-
-
 class GeleverdProductKadastraalPersoonIdentificatie(BaseModel):
     negatieve_mededeling: Optional[NegatieveMededelingProduct] = Field(
         None, alias="negatieveMededeling"
     )
     product: Optional[NEN3610ID] = None
-
-
-class Geslacht(BaseModel):
-    geslachtsaanduiding: Optional[Waardelijst] = None
-
-
-class GevraagdGebied(BaseModel):
-    betreft_onroerende_zaken: Optional[List[NEN3610ID]] = Field(
-        None, alias="betreftOnroerendeZaken"
-    )
-    huisletter: Optional[str] = Field(None, pattern="^[a-zA-Z]$")
-    huisnummer: Optional[int] = Field(None, ge=1, le=99999)
-    huisnummertoevoeging: Optional[str] = Field(None, pattern="^([a-z,A-Z,0-9]){1,4}$")
-    identificatie: Optional[NEN3610ID] = None
-    postcode: Optional[str] = Field(None, pattern="^[1-9][0-9][0-9][0-9][A-Z][A-Z]$")
-    straatnaam: Optional[str] = Field(None, max_length=80)
-    plaatsnaam: Optional[str] = Field(None, max_length=80)
-
-
-class GezamenlijkAandeel(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    aandeel: Optional[TypeBreuk] = None
-
-
-class Herverkavelingsgebied(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    status_herverkavelingsproject: Optional[Waardelijst] = Field(
-        None, alias="statusHerverkavelingsproject"
-    )
-
-
-class JaarlijksBedrag(BaseModel):
-    bedrag: Optional[Bedrag] = None
-    betreft_meer_onroerende_zaken: Optional[bool] = Field(
-        None, alias="betreftMeerOnroerendeZaken"
-    )
 
 
 class KadastraalPersoonIdentificatie(BaseModel):
@@ -539,32 +236,6 @@ class KadastraalPersoonIdentificatie(BaseModel):
     geleverd_product_kpi: Optional[
         GeleverdProductKadastraalPersoonIdentificatie
     ] = Field(None, alias="geleverdProductKPI")
-
-
-class LocatieKadastraalObject(BaseModel):
-    koppelingswijze: Optional[Waardelijst] = None
-    betreft: Optional[NEN3610ID] = None
-    heeft: Optional[NEN3610ID] = None
-
-
-class Mandeligheid(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    is_gebaseerd_op: Optional[List[NEN3610ID]] = Field(None, alias="isGebaseerdOp")
-    heeft_hoofdzaak: Optional[List[NEN3610ID]] = Field(None, alias="heeftHoofdzaak")
-
-
-class NietNatuurlijkPersoon(FieldPersoon):
-    rechtsvorm: Optional[Waardelijst] = None
-    statutaire_naam: Optional[str] = Field(
-        None, alias="statutaireNaam", max_length=200, min_length=1
-    )
-    statutaire_zetel: Optional[str] = Field(
-        None, alias="statutaireZetel", max_length=40, min_length=1
-    )
-    betreft: Optional[Rechtspersoon] = None
 
 
 class Nummeraanduiding(BaseModel):
@@ -593,28 +264,6 @@ class ObjectlocatieBuitenland(FieldAdresLocatie):
     adres_buitenland: Optional[AdresBuitenland] = Field(None, alias="adresBuitenland")
 
 
-class ObjectReferentie(BaseModel):
-    type: Optional[ObjectReferentieType] = None
-    domein: Optional[str] = None
-    identificatie_referentie: Optional[str] = Field(
-        None, alias="identificatieReferentie"
-    )
-
-
-class Overlijden(BaseModel):
-    datum_overlijden: Optional[TypeOnvolledigeDatum] = Field(
-        None, alias="datumOverlijden"
-    )
-
-
-class PortefeuilleId(BaseModel):
-    akr_registercode: Optional[Waardelijst] = Field(None, alias="akrRegistercode")
-    akr_stukdeel1: Optional[str] = Field(None, alias="akrStukdeel1")
-    akr_stukdeel2: Optional[str] = Field(None, alias="akrStukdeel2")
-    akr_stukdeel3: Optional[str] = Field(None, alias="akrStukdeel3")
-    volgnummer_staat75: Optional[int] = Field(None, alias="volgnummerStaat75")
-
-
 class PostbusLocatie(FieldAdresLocatie):
     postbusnummer: Optional[int] = Field(None, max_length=7, min_length=1)
     postcode: Optional[TypePostcode] = None
@@ -623,129 +272,9 @@ class PostbusLocatie(FieldAdresLocatie):
     )
 
 
-class PubliekrechtelijkeBeperking(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    datum_beeindiging: Optional[datetime] = Field(None, alias="datumBeeindiging")
-    datum_in_werking: Optional[datetime] = Field(None, alias="datumInWerking")
-    grondslag: Optional[Waardelijst] = None
-    is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(None, alias="isVermeldIn")
-    leidt_tot: Optional[List[OnroerendeZaakBeperking]] = Field(None, alias="leidtTot")
-    bevoegd_gezag: Optional[NEN3610ID] = Field(None, alias="bevoegdGezag")
-    heeft: Optional[NEN3610ID] = None
-
-
-class Stukdeel(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    aard: Optional[Waardelijst] = None
-    datum_kenbaarheid_pb: Optional[datetime] = Field(None, alias="datumKenbaarheidPB")
-    omschrijving_gekozen_woonplaats: Optional[str] = Field(
-        None, alias="omschrijvingGekozenWoonplaats"
-    )
-    is_aanvulling_op: Optional[List[NEN3610ID]] = Field(
-        None, alias="isAanvullingOp", min_length=0
-    )
-    bedrag_vorderingsbeslag: Optional[Bedrag] = Field(
-        None, alias="bedragVorderingsbeslag"
-    )
-    bedrag_zekerheidsstelling_hypotheek: Optional[Bedrag] = Field(
-        None, alias="bedragZekerheidsstellingHypotheek"
-    )
-
-
-class Tenaamstelling(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    aandeel: Optional[TypeBreuk] = None
-    burgerlijke_staat_ten_tijde_van_verkrijging: Optional[Waardelijst] = Field(
-        None, alias="burgerlijkeStaatTenTijdeVanVerkrijging"
-    )
-    omschrijving: Optional[str] = Field(None, max_length=50, min_length=1)
-    verkregen_namens_samenwerkingsverband: Optional[Waardelijst] = Field(
-        None, alias="verkregenNamensSamenwerkingsverband"
-    )
-    betrokken_partner: Optional[NEN3610ID] = Field(None, alias="betrokkenPartner")
-    geldt_voor: Optional[NEN3610ID] = Field(None, alias="geldtVoor")
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    betrokken_samenwerkingsverband: Optional[NEN3610ID] = Field(
-        None, alias="betrokkenSamenwerkingsverband"
-    )
-    betrokken_gorzen_en_aanwassen: Optional[NEN3610ID] = Field(
-        None, alias="betrokkenGorzenEnAanwassen"
-    )
-    is_gebaseerd_op: Optional[List[NEN3610ID]] = Field(None, alias="isGebaseerdOp")
-    van: Optional[NEN3610ID] = None
-    ten_name_van: Optional[NEN3610ID] = Field(None, alias="tenNameVan")
-
-
-class TypeDeelEnNummer(BaseModel):
-    deel: Optional[str] = None
-    nummer: Optional[str] = None
-    reeks: Optional[Waardelijst] = None
-    registercode: Optional[Waardelijst] = None
-    soort_register: Optional[Waardelijst] = Field(None, alias="soortRegister")
-
-
-class TypeKadastraleAanduiding(BaseModel):
-    appartementsrecht_volgnummer: Optional[int] = Field(
-        None, alias="appartementsrechtVolgnummer"
-    )
-    kadastrale_gemeente: Optional[Waardelijst] = Field(None, alias="kadastraleGemeente")
-    perceelnummer: Optional[int] = None
-    sectie: Optional[str] = None
-
-
-class TypeKoopsom(BaseModel):
-    bedrag: Optional[Bedrag] = None
-    indicatie_meer_objecten: Optional[bool] = Field(None, alias="indicatieMeerObjecten")
-    koopjaar: Optional[int] = None
-
-
-class TypeLandinrichtingsrente(BaseModel):
-    bedrag: Optional[Bedrag] = None
-    eindjaar: Optional[int] = None
-
-
 class TypeOppervlak(BaseModel):
     soort_grootte: Optional[Waardelijst] = Field(None, alias="soortGrootte")
     waarde: Optional[float] = None
-
-
-class ZekerheidsstellingHypothecair(FieldZekerheidsstelling):
-    pass
-
-
-class ZekerheidsstellingInzakeBeslag(FieldZekerheidsstelling):
-    aard: Optional[Waardelijst] = None
-
-
-class FieldOnroerendeZaak(FieldKadastraalObject):
-    type: Optional[OnroerendeZaakTypeEnum] = None
-    aard_cultuur_bebouwd: Optional[Waardelijst] = Field(
-        None, alias="aardCultuurBebouwd"
-    )
-    aard_cultuur_onbebouwd: Optional[Waardelijst] = Field(
-        None, alias="aardCultuurOnbebouwd"
-    )
-    heeft_meer_adressen: Optional[bool] = Field(None, alias="heeftMeerAdressen")
-    kadastrale_aanduiding: Optional[TypeKadastraleAanduiding] = Field(
-        None, alias="kadastraleAanduiding"
-    )
-    koopsom: Optional[TypeKoopsom] = None
-    landinrichtingsrente: Optional[List[TypeLandinrichtingsrente]] = Field(
-        None, min_length=0
-    )
-    toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
-    ontstaan_uit_oz: Optional[List[OnroerendeZaakFiliatie]] = Field(
-        None, alias="ontstaanUitOZ", min_length=0
-    )
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-    overgegaan_in: Optional[List[VoorwaartseOnroerendeZaakFiliatie]] = Field(
-        None, alias="overgegaanIn"
-    )
 
 
 class Appartementsrecht(FieldOnroerendeZaak):
@@ -765,77 +294,8 @@ class ATCollectie(BaseModel):
     )
 
 
-class Beperkingsgebied(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    ontleend_aan: Optional[List[ObjectReferentie]] = Field(None, alias="ontleendAan")
-
-
-class Collectie(BaseModel):
-    aantekeningen: Optional[List[Aantekening]] = None
-    locatie_kadastraal_objecten: Optional[List[LocatieKadastraalObject]] = Field(
-        None, alias="locatieKadastraalObjecten"
-    )
-    onroerende_zaken: Optional[List[FieldOnroerendeZaak]] = Field(
-        None, alias="onroerendeZaken"
-    )
-    personen: Optional[List[FieldPersoon]] = None
-    adres_locaties: Optional[List[FieldAdresLocatie]] = Field(
-        None, alias="adresLocaties"
-    )
-    attendering_kadastraal_objecten: Optional[
-        List[AttenderingKadastraalObject]
-    ] = Field(None, alias="attenderingKadastraalObjecten")
-    signalering_kadastraal_objecten: Optional[
-        List[SignaleringKadastraalObject]
-    ] = Field(None, alias="signaleringKadastraalObjecten")
-    stukdelen: Optional[List[Stukdeel]] = None
-    stukken: Optional[List[FieldStuk]] = None
-    verblijfsobjecten: Optional[List[Verblijfsobject]] = None
-    aanvullende_gegevens: Optional[List[AanvullendeGegevens]] = Field(
-        None, alias="aanvullendeGegevens"
-    )
-
-
-class Erfpachtcanon(BaseModel):
-    einddatum_afkoop: Optional[datetime] = Field(None, alias="einddatumAfkoop")
-    identificatie: Optional[NEN3610ID] = None
-    indicatie_oude_onroerende_zaak_betrokken: Optional[bool] = Field(
-        None, alias="indicatieOudeOnroerendeZaakBetrokken"
-    )
-    jaarlijks_bedrag: Optional[JaarlijksBedrag] = Field(None, alias="jaarlijksBedrag")
-    soort: Optional[Waardelijst] = None
-    betreft: Optional[NEN3610ID] = None
-    is_gebaseerd_op: Optional[NEN3610ID] = Field(None, alias="isGebaseerdOp")
-    is_vermeld_in: Optional[List[NEN3610ID]] = Field(
-        None, alias="isVermeldIn", min_length=0
-    )
-
-
-class GeregistreerdPersoon(BaseModel):
-    adellijke_titel_of_predikaat: Optional[Waardelijst] = Field(
-        None, alias="adellijkeTitelOfPredikaat"
-    )
-    bsn: str = Field(..., max_length=9, pattern="([0][0-9]{8})|([1-9][0-9]{7,8})")
-    geboorte: Optional[Geboorte] = None
-    geslacht: Optional[Geslacht] = None
-    in_onderzoek: Optional[bool] = Field(None, alias="inOnderzoek")
-    naam: Optional[Naam] = None
-    overlijden: Optional[Overlijden] = None
-
-
-class HPICollectie(Collectie):
-    zekerheidsstellingen: Optional[List[FieldZekerheidsstelling]] = None
-    overig_betrokken_kadastraal_objecten: Optional[
-        List[OverigBetrokkenKadastraalObject]
-    ] = Field(None, alias="overigBetrokkenKadastraalObjecten")
-
-
 class HypotheekinformatieProduct(Product):
     met: Optional[HPICollectie] = None
-
-
-class Kadasterstuk(FieldStuk):
-    portefeuillenummer: Optional[PortefeuilleId] = None
 
 
 class Leidingnetwerk(FieldOnroerendeZaak):
@@ -843,41 +303,8 @@ class Leidingnetwerk(FieldOnroerendeZaak):
     omschrijving: Optional[str] = None
 
 
-class NatuurlijkPersoon(FieldPersoon):
-    indicatie_overleden: Optional[bool] = Field(None, alias="indicatieOverleden")
-    betreft: Optional[GeregistreerdPersoon] = None
-
-
-class OLPCollectie(BaseModel):
-    aanvullende_gegevens: Optional[List[AanvullendeGegevens]] = Field(
-        None, alias="aanvullendeGegevens"
-    )
-    adres_locaties: Optional[List[FieldAdresLocatie]] = Field(
-        None, alias="adresLocaties"
-    )
-    locatie_kadastraal_objecten: Optional[List[LocatieKadastraalObject]] = Field(
-        None, alias="locatieKadastraalObjecten"
-    )
-    onroerende_zaken: Optional[List[FieldOnroerendeZaak]] = Field(
-        None, alias="onroerendeZaken"
-    )
-    personen: Optional[List[FieldPersoon]] = None
-
-
 class ObjectlijstPersoonProduct(Product):
     met: Optional[OLPCollectie] = None
-
-
-class OICollectie(BaseModel):
-    adres_locaties: Optional[List[FieldAdresLocatie]] = Field(
-        None, alias="adresLocaties"
-    )
-    locatie_kadastraal_objecten: Optional[List[LocatieKadastraalObject]] = Field(
-        None, alias="locatieKadastraalObjecten"
-    )
-    onroerende_zaken: Optional[List[FieldOnroerendeZaak]] = Field(
-        None, alias="onroerendeZaken"
-    )
 
 
 class OvergegaanInProduct(Product):
@@ -892,56 +319,8 @@ class Perceel(FieldOnroerendeZaak):
     plaatscoordinaten: Optional[PointGeoJSON] = None
 
 
-class PTCollectie(BaseModel):
-    adres_locaties: Optional[List[FieldAdresLocatie]] = Field(
-        None, alias="adresLocaties"
-    )
-    gevraagd_gebied: Optional[GevraagdGebied] = Field(None, alias="gevraagdGebied")
-    locatie_kadastraal_objecten: Optional[List[LocatieKadastraalObject]] = Field(
-        None, alias="locatieKadastraalObjecten"
-    )
-    onroerende_zaken: Optional[List[FieldOnroerendeZaak]] = Field(
-        None, alias="onroerendeZaken"
-    )
-
-
-class TerInschrijvingAangebodenStuk(FieldStuk):
-    aard: Optional[Waardelijst] = None
-    deel_en_nummer: Optional[TypeDeelEnNummer] = Field(None, alias="deelEnNummer")
-    heeft_kadaster_verzoek: Optional[bool] = Field(None, alias="heeftKadasterVerzoek")
-    status_stuk_or: Optional[Waardelijst] = Field(None, alias="statusStukOR")
-    tekening_ingeschreven: Optional[bool] = Field(None, alias="tekeningIngeschreven")
-    tijdstip_aanbieding: Optional[Tijdstip] = Field(None, alias="tijdstipAanbieding")
-    tijdstip_ondertekening: Optional[Tijdstip] = Field(
-        None, alias="tijdstipOndertekening"
-    )
-
-
 class AdresTreffersProduct(Product):
     met: Optional[ATCollectie] = None
-
-
-class EDICollectie(Collectie):
-    erfpachtcanons: Optional[List[Erfpachtcanon]] = None
-    gezamenlijk_aandelen: Optional[List[GezamenlijkAandeel]] = Field(
-        None, alias="gezamenlijkAandelen"
-    )
-    mandeligheden: Optional[List[Mandeligheid]] = None
-    tenaamstellingen: Optional[List[Tenaamstelling]] = None
-    appartementsrecht_splitsingen: Optional[List[AppartementsrechtSplitsing]] = Field(
-        None, alias="appartementsrechtSplitsingen"
-    )
-    publiekrechtelijke_beperkingen: Optional[List[PubliekrechtelijkeBeperking]] = Field(
-        None, alias="publiekrechtelijkeBeperkingen"
-    )
-    beperkingsgebieden: Optional[List[Beperkingsgebied]] = None
-    zakelijk_rechten: Optional[List[ZakelijkRecht]] = Field(
-        None, alias="zakelijkRechten"
-    )
-    verkavel_objecten: Optional[List[VerkavelObject]] = Field(
-        None, alias="verkavelObjecten"
-    )
-    herverkavelingsgebieden: Optional[List[Herverkavelingsgebied]] = None
 
 
 class EGICollectie(Collectie):
@@ -975,10 +354,6 @@ class EGICollectie(Collectie):
 
 class EigenaarsinformatieProduct(Product):
     met: Optional[EGICollectie] = None
-
-
-class EigendomsinformatieProduct(Product):
-    met: Optional[EDICollectie] = None
 
 
 class GeleverdProductEigenaarsinformatie(BaseModel):
