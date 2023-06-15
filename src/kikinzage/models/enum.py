@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class PersoonTypeEnum(Enum):
+class PersoonTypeEnum(str, Enum):
     NATUURLIJK_PERSOON = "NatuurlijkPersoon"
     NIET_NATUURLIJK_PERSOON = "NietNatuurlijkPersoon"
 
