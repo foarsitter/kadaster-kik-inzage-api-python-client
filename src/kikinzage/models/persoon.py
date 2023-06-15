@@ -1,5 +1,4 @@
 from datetime import date
-from typing import Annotated
 from typing import List
 from typing import Literal
 from typing import Optional
@@ -7,6 +6,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import Field
+from typing_extensions import Annotated
 
 from kikinzage.models.enum import PersoonTypeEnum
 from kikinzage.models.misc import NEN3610ID
