@@ -8,8 +8,8 @@ from httpx._client import USE_CLIENT_DEFAULT
 from httpx._client import UseClientDefault
 
 from .. import models
-from ..models import Formaat
 from ..models import ResponseType
+from ..models.enum import Formaat
 from .base import KikinzageBaseClient
 
 

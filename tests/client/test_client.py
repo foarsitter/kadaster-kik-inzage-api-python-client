@@ -17,6 +17,6 @@ def test_get_klantreferentie() -> None:
     assert kik._get_klantreferentie(USE_CLIENT_DEFAULT) == "klantreferentie"
 
 
-def test_abstract_client_factory():
+def test_abstract_client_factory() -> None:
     with pytest.raises(NotImplementedError):
         KikinzageBaseClient("", "")
