@@ -43,6 +43,7 @@ class KikinzageBaseClient(ABC):
         hyperlinkopproduct: Optional[bool] = None,
         inkoopnummer: Optional[str] = None,
         referentienummer: Optional[str] = None,
+        **httpx_kwargs: Any,
     ) -> None:
         self.klantreferentie = klantreferentie
         self.username = username
@@ -53,6 +54,14 @@ class KikinzageBaseClient(ABC):
         self.hyperlinkopproduct = hyperlinkopproduct
         self.inkoopnummer = inkoopnummer
         self.referentienummer = referentienummer
+
+        httpx_kwargs.setdefault("base_url", base_url)
+        httpx_kwargs.setdefault("auth", (self.username, self.password))
+
+        self.client = self.create_client(**httpx_kwargs)
+
+    def create_client(self, **httpx_kwargs: Any) -> BaseClient:
+        raise NotImplementedError
 
     def process_response(
         self,
@@ -91,6 +100,21 @@ class KikinzageBaseClient(ABC):
             response.status_code, errors.KIKRequestError
         )
         return exception_type
+
+    def _get_klantreferentie(
+        self, klantreferentie: Union[str, UseClientDefault]
+    ) -> str:
+        if isinstance(klantreferentie, str):
+            return klantreferentie
+        elif self.klantreferentie is not None:
+            return self.klantreferentie
+
+        raise errors.KIKError(
+            "`klantreferentie` is required, pass it as parameter or set `self.klantreferentie`"
+        )
+
+    def _get_formaat(self, formaat: Union[Formaat, UseClientDefault]) -> str:
+        return formaat.value if isinstance(formaat, Formaat) else self.formaat.value
 
     def request_eigendomsinformatie_kadastraleaanduiding(
         self,
@@ -238,18 +262,3 @@ class KikinzageBaseClient(ABC):
         )
 
         return request
-
-    def _get_klantreferentie(
-        self, klantreferentie: Union[str, UseClientDefault]
-    ) -> str:
-        if isinstance(klantreferentie, str):
-            return klantreferentie
-        elif self.klantreferentie is not None:
-            return self.klantreferentie
-
-        raise errors.KIKError(
-            "`klantreferentie` is required, pass it as parameter or set `self.klantreferentie`"
-        )
-
-    def _get_formaat(self, formaat: Union[Formaat, UseClientDefault]) -> str:
-        return formaat.value if isinstance(formaat, Formaat) else self.formaat.value
