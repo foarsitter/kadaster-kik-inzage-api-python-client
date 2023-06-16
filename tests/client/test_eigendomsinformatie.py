@@ -1,3 +1,5 @@
+from typing import Optional
+
 import httpx
 import pytest
 from respx import MockRouter
@@ -21,13 +23,29 @@ def test_401() -> None:
         )
 
 
-def test_postcode(kik: DefaultClient) -> None:
+@pytest.mark.parametrize(
+    "postcode,huisnummer,huisletter,huisnummertoevoeging",
+    [
+        ("4884ME", 16, None, "K298"),
+        ("1016AK", 402, "B", None),
+        ("1012AR", 41, "C", None),
+        ("6301VK", 21, None, None),
+    ],
+)
+def test_postcode(
+    kik: DefaultClient,
+    postcode: str,
+    huisnummer: int,
+    huisletter: Optional[str],
+    huisnummertoevoeging: Optional[str],
+) -> None:
     response = kik.eigendomsinformatie_postcode(
-        postcode="4884ME",
-        huisnummer="16",
+        postcode=postcode,
+        huisnummer=huisnummer,
+        huisletter=huisletter,
+        huisnummertoevoeging=huisnummertoevoeging,
         formaat=Formaat.JSON,
         klantreferentie="onbekend",
-        huisnummertoevoeging="K298",
     )
     assert response.proces
     assert response.proces.severity_code == SeverityCode.INFO
@@ -41,7 +59,7 @@ def test_postcode(kik: DefaultClient) -> None:
 def test_postcode_pdf(kik: DefaultClient) -> None:
     response = kik.eigendomsinformatie_postcode(
         postcode="4884ME",
-        huisnummer="16",
+        huisnummer=16,
         formaat=Formaat.PDF,
         klantreferentie="onbekend",
         huisnummertoevoeging="K298",
