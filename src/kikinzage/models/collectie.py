@@ -5,25 +5,24 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from kikinzage.models.eigendomsinformatie import AppartementsrechtSplitsing
-from kikinzage.models.eigendomsinformatie import Beperkingsgebied
-from kikinzage.models.eigendomsinformatie import Erfpachtcanon
-from kikinzage.models.eigendomsinformatie import GezamenlijkAandeel
-from kikinzage.models.eigendomsinformatie import Herverkavelingsgebied
-from kikinzage.models.eigendomsinformatie import Mandeligheid
-from kikinzage.models.eigendomsinformatie import PubliekrechtelijkeBeperking
-from kikinzage.models.eigendomsinformatie import Tenaamstelling
-from kikinzage.models.eigendomsinformatie import VerkavelObject
-from kikinzage.models.eigendomsinformatie import ZakelijkRecht
-
-from .enum import AdresLocatieTypeEnum
+from .adres import AdresType
+from .adres import FieldAdresLocatie
+from .eigendomsinformatie import AppartementsrechtSplitsing
+from .eigendomsinformatie import Beperkingsgebied
+from .eigendomsinformatie import Erfpachtcanon
+from .eigendomsinformatie import GezamenlijkAandeel
+from .eigendomsinformatie import Herverkavelingsgebied
+from .eigendomsinformatie import Mandeligheid
+from .eigendomsinformatie import PubliekrechtelijkeBeperking
+from .eigendomsinformatie import Tenaamstelling
+from .eigendomsinformatie import VerkavelObject
+from .eigendomsinformatie import ZakelijkRecht
 from .enum import OnroerendeZaakTypeEnum
 from .misc import NEN3610ID
 from .misc import Bedrag
 from .misc import Waardelijst
 from .persoon import PersoonType
-from .product import Product
-from .stukken import FieldStuk
+from .stukken import FieldType
 from .zekerheid import FieldZekerheidsstelling
 
 
@@ -63,11 +62,6 @@ class OnroerendeZaakFiliatie(BaseModel):
 
 class VoorwaartseOnroerendeZaakFiliatie(BaseModel):
     betreft_oz: Optional[NEN3610ID] = Field(None, alias="betreftOZ")
-
-
-class FieldAdresLocatie(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[AdresLocatieTypeEnum] = None
 
 
 class FieldKadastraalObject(BaseModel):
@@ -231,9 +225,7 @@ class Collectie(BaseModel):
         None, alias="onroerendeZaken"
     )
     personen: Optional[List[PersoonType]] = None
-    adres_locaties: Optional[List[FieldAdresLocatie]] = Field(
-        None, alias="adresLocaties"
-    )
+    adres_locaties: Optional[List[AdresType]] = Field(None, alias="adresLocaties")
     attendering_kadastraal_objecten: Optional[
         List[AttenderingKadastraalObject]
     ] = Field(None, alias="attenderingKadastraalObjecten")
@@ -241,7 +233,7 @@ class Collectie(BaseModel):
         List[SignaleringKadastraalObject]
     ] = Field(None, alias="signaleringKadastraalObjecten")
     stukdelen: Optional[List[Stukdeel]] = None
-    stukken: Optional[List[FieldStuk]] = None
+    stukken: Optional[List[FieldType]] = None
     verblijfsobjecten: Optional[List[Verblijfsobject]] = None
     aanvullende_gegevens: Optional[List[AanvullendeGegevens]] = Field(
         None, alias="aanvullendeGegevens"
@@ -278,5 +270,55 @@ class HPICollectie(Collectie):
     ] = Field(None, alias="overigBetrokkenKadastraalObjecten")
 
 
-class EigendomsinformatieProduct(Product):
-    met: Optional[EDICollectie] = None
+class ATCollectie(BaseModel):
+    adres_locaties: Optional[List[FieldAdresLocatie]] = Field(
+        None, alias="adresLocaties"
+    )
+    gevraagd_gebied: Optional[GevraagdGebied] = Field(None, alias="gevraagdGebied")
+    locatie_kadastraal_objecten: Optional[List[LocatieKadastraalObject]] = Field(
+        None, alias="locatieKadastraalObjecten"
+    )
+    onroerende_zaken: Optional[List[FieldOnroerendeZaak]] = Field(
+        None, alias="onroerendeZaken"
+    )
+
+
+class SignaleringPersoon(BaseModel):
+    ten_behoeve_van: Optional[List[NEN3610ID]] = Field(None, alias="tenBehoeveVan")
+    van: Optional[NEN3610ID] = None
+
+
+class AttenderingPersoon(BaseModel):
+    van: Optional[NEN3610ID] = None
+    ten_behoeve_van: Optional[List[NEN3610ID]] = Field(
+        None, alias="tenBehoeveVan", title="tenBehoeveVan"
+    )
+
+
+class EGICollectie(Collectie):
+    erfpachtcanons: Optional[List[Erfpachtcanon]] = None
+    gezamenlijk_aandelen: Optional[List[GezamenlijkAandeel]] = Field(
+        None, alias="gezamenlijkAandelen"
+    )
+    mandeligheden: Optional[List[Mandeligheid]] = None
+    tenaamstellingen: Optional[List[Tenaamstelling]] = None
+    appartementsrecht_splitsingen: Optional[List[AppartementsrechtSplitsing]] = Field(
+        None, alias="appartementsrechtSplitsingen"
+    )
+    publiekrechtelijke_beperkingen: Optional[List[PubliekrechtelijkeBeperking]] = Field(
+        None, alias="publiekrechtelijkeBeperkingen"
+    )
+    beperkingsgebieden: Optional[List[Beperkingsgebied]] = None
+    zakelijk_rechten: Optional[List[ZakelijkRecht]] = Field(
+        None, alias="zakelijkRechten"
+    )
+    attendering_personen: Optional[List[AttenderingPersoon]] = Field(
+        None, alias="attenderingPersonen"
+    )
+    signalering_personen: Optional[List[SignaleringPersoon]] = Field(
+        None, alias="signaleringPersonen"
+    )
+    verkavel_objecten: Optional[List[VerkavelObject]] = Field(
+        None, alias="verkavelObjecten"
+    )
+    herverkavelingsgebieden: Optional[List[Herverkavelingsgebied]] = None
