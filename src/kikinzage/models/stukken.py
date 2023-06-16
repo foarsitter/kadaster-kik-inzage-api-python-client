@@ -1,6 +1,5 @@
 from datetime import date
 from datetime import datetime
-from typing import Annotated
 from typing import List
 from typing import Literal
 from typing import Optional
@@ -8,6 +7,7 @@ from typing import Union
 
 from pydantic import BaseModel
 from pydantic import Field
+from typing_extensions import Annotated
 
 from .enum import StukTypeEnum
 from .misc import NEN3610ID
