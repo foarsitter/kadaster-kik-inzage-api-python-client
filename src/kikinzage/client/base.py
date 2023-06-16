@@ -192,7 +192,7 @@ class KikinzageBaseClient(ABC):
     def request_eigendomsinformatie_postcode(
         self,
         postcode: str,
-        huisnummer: str,
+        huisnummer: int,
         huisletter: Optional[str] = None,
         huisnummertoevoeging: Optional[str] = None,
         *,

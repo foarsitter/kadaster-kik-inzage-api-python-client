@@ -86,7 +86,7 @@ class DefaultClient(KikinzageBaseClient):
     def eigendomsinformatie_postcode(
         self,
         postcode: str,
-        huisnummer: str,
+        huisnummer: int,
         huisletter: Optional[str] = None,
         huisnummertoevoeging: Optional[str] = None,
         *,

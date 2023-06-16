@@ -35,8 +35,8 @@ def eigendomsinformatie(
 @eigendomsinformatie.command()
 @click.pass_context
 @click.argument("postcode", type=str)
-@click.argument("huisnummer", type=str)
-def postcode(ctx: Context, postcode: str, huisnummer: str) -> None:
+@click.argument("huisnummer", type=int)
+def postcode(ctx: Context, postcode: str, huisnummer: int) -> None:
     """Eigendomsinformatie - Postcode."""
 
     log_response = ResponseStorage()
