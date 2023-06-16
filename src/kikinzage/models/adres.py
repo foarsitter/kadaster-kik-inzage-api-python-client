@@ -7,9 +7,9 @@ from pydantic import Field
 from pydantic import RootModel
 from typing_extensions import Annotated
 
-from kikinzage.models.enum import AdresLocatieTypeEnum
-from kikinzage.models.misc import NEN3610ID
-from kikinzage.models.misc import Waardelijst
+from .enum import AdresLocatieTypeEnum
+from .misc import NEN3610ID
+from .misc import Waardelijst
 
 
 class Adresnummer(RootModel[str]):

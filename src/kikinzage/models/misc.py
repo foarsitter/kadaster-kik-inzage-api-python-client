@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from kikinzage.models.enum import Type
+from .enum import Type
 
 
 class NEN3610ID(BaseModel):

@@ -8,9 +8,9 @@ from pydantic import BaseModel
 from pydantic import Field
 from typing_extensions import Annotated
 
-from kikinzage.models.enum import PersoonTypeEnum
-from kikinzage.models.misc import NEN3610ID
-from kikinzage.models.misc import Waardelijst
+from .enum import PersoonTypeEnum
+from .misc import NEN3610ID
+from .misc import Waardelijst
 
 
 class TypeOnvolledigeDatum(BaseModel):

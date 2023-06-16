@@ -2,6 +2,7 @@ from typing import TypeVar
 
 import pydantic
 
+from .adres import *  # noqa
 from .collectie import *  # noqa
 from .eigendomsinformatie import *  # noqa
 from .enum import *  # noqa

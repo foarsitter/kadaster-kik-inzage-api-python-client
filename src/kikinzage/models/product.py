@@ -4,14 +4,14 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from kikinzage.models.collectie import ATCollectie
-from kikinzage.models.collectie import EDICollectie
-from kikinzage.models.collectie import EGICollectie
-from kikinzage.models.collectie import HPICollectie
-from kikinzage.models.collectie import OICollectie
-from kikinzage.models.collectie import OLPCollectie
-from kikinzage.models.collectie import PTCollectie
-from kikinzage.models.misc import NEN3610ID
+from .collectie import ATCollectie
+from .collectie import EDICollectie
+from .collectie import EGICollectie
+from .collectie import HPICollectie
+from .collectie import OICollectie
+from .collectie import OLPCollectie
+from .collectie import PTCollectie
+from .misc import NEN3610ID
 
 
 class Product(BaseModel):

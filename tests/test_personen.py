@@ -1,7 +1,7 @@
 from kikinzage.models import Collectie
-from kikinzage.models.persoon import GeregistreerdPersoon
-from kikinzage.models.persoon import NatuurlijkPersoon
-from kikinzage.models.persoon import NietNatuurlijkPersoon
+from kikinzage.models import GeregistreerdPersoon
+from kikinzage.models import NatuurlijkPersoon
+from kikinzage.models import NietNatuurlijkPersoon
 
 
 def test_collection() -> None:

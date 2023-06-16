@@ -4,9 +4,9 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic import Field
 
-from kikinzage.models.enum import ZekerheidsstellingTypeEnum
-from kikinzage.models.misc import NEN3610ID
-from kikinzage.models.misc import Waardelijst
+from .enum import ZekerheidsstellingTypeEnum
+from .misc import NEN3610ID
+from .misc import Waardelijst
 
 
 class FieldZekerheidsstelling(BaseModel):
