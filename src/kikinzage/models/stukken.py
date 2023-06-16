@@ -1,7 +1,10 @@
 from datetime import date
 from datetime import datetime
+from typing import Annotated
 from typing import List
+from typing import Literal
 from typing import Optional
+from typing import Union
 
 from pydantic import BaseModel
 from pydantic import Field
@@ -11,23 +14,12 @@ from .misc import NEN3610ID
 from .misc import Waardelijst
 
 
-class FieldStuk(BaseModel):
-    identificatie: Optional[NEN3610ID] = None
-    type: Optional[StukTypeEnum] = None
-    toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
-    omvat: Optional[List[NEN3610ID]] = None
-
-
 class PortefeuilleId(BaseModel):
     akr_registercode: Optional[Waardelijst] = Field(None, alias="akrRegistercode")
     akr_stukdeel1: Optional[str] = Field(None, alias="akrStukdeel1")
     akr_stukdeel2: Optional[str] = Field(None, alias="akrStukdeel2")
     akr_stukdeel3: Optional[str] = Field(None, alias="akrStukdeel3")
     volgnummer_staat75: Optional[int] = Field(None, alias="volgnummerStaat75")
-
-
-class Kadasterstuk(FieldStuk):
-    portefeuillenummer: Optional[PortefeuilleId] = None
 
 
 class TypeDeelEnNummer(BaseModel):
@@ -40,10 +32,25 @@ class TypeDeelEnNummer(BaseModel):
 
 class Tijdstip(BaseModel):
     datum: date
-    tijd: datetime
+    tijd: Optional[datetime] = None
+
+
+class FieldStuk(BaseModel):
+    identificatie: Optional[NEN3610ID] = None
+    type: Optional[StukTypeEnum] = None
+    toelichting_bewaarder: Optional[str] = Field(None, alias="toelichtingBewaarder")
+    omvat: Optional[List[NEN3610ID]] = None
+
+
+class Kadasterstuk(FieldStuk):
+    type: Literal[StukTypeEnum.KADASTERSTUK] = StukTypeEnum.KADASTERSTUK
+    portefeuillenummer: Optional[PortefeuilleId] = None
 
 
 class TerInschrijvingAangebodenStuk(FieldStuk):
+    type: Literal[
+        StukTypeEnum.TER_INSCHRIJVING_AANGEBODEN_STUK
+    ] = StukTypeEnum.TER_INSCHRIJVING_AANGEBODEN_STUK
     aard: Optional[Waardelijst] = None
     deel_en_nummer: Optional[TypeDeelEnNummer] = Field(None, alias="deelEnNummer")
     heeft_kadaster_verzoek: Optional[bool] = Field(None, alias="heeftKadasterVerzoek")
@@ -53,3 +60,8 @@ class TerInschrijvingAangebodenStuk(FieldStuk):
     tijdstip_ondertekening: Optional[Tijdstip] = Field(
         None, alias="tijdstipOndertekening"
     )
+
+
+FieldType = Annotated[
+    Union[Kadasterstuk, TerInschrijvingAangebodenStuk], Field(discriminator="type")
+]
