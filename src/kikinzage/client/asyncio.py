@@ -194,3 +194,89 @@ class AsyncClient(KikinzageBaseClient):
         )
 
         return await self.send(request, models.Eigenaarsinformatie)
+
+    async def eigendomsinformatie_postcode(
+        self,
+        postcode: str,
+        huisnummer: int,
+        huisletter: Optional[str] = None,
+        huisnummertoevoeging: Optional[str] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Eigendomsinformatie:
+        request = self.request_eigendomsinformatie_postcode(
+            postcode=postcode,
+            huisnummer=huisnummer,
+            huisletter=huisletter,
+            huisnummertoevoeging=huisnummertoevoeging,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return await self.send(request, models.Eigendomsinformatie)
+
+    async def eigendomsinformatie_kadastraleaanduiding(
+        self,
+        kadastralegemeente: str,
+        sectie: str,
+        perceelnummer: int,
+        appartementsrecht_volgnummer: Optional[int] = None,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Eigendomsinformatie:
+        request = self.request_eigendomsinformatie_kadastraleaanduiding(
+            kadastralegemeente=kadastralegemeente,
+            sectie=sectie,
+            perceelnummer=perceelnummer,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            appartementsrecht_volgnummer=appartementsrecht_volgnummer,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return await self.send(request, models.Eigendomsinformatie)
+
+    async def eigendomsinformatie_adres(
+        self,
+        plaatsnaam: str,
+        straatnaam: str,
+        huisnummer: int,
+        huisletter: Optional[str] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Eigendomsinformatie:
+        request = self.request_eigendomsinformatie_adres(
+            plaatsnaam=plaatsnaam,
+            straatnaam=straatnaam,
+            huisnummer=huisnummer,
+            huisletter=huisletter,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return await self.send(request, models.Eigendomsinformatie)

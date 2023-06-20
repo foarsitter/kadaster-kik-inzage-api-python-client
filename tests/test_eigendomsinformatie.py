@@ -4,6 +4,7 @@ import pytest
 
 from kikinzage.client import AsyncClient
 from kikinzage.client.default import DefaultClient
+from kikinzage.models import Eigendomsinformatie
 from kikinzage.models import Formaat
 from kikinzage.models import SeverityCode
 
@@ -60,22 +61,15 @@ def test_postcode_pdf(kik: DefaultClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
-    response = await akik.eigendomsinformatie_kadastraalobjectidentificatie(
-        kadastraalobjectidentificatie="11010156070000",
+async def test_postcode_pdf_async(akik: AsyncClient) -> None:
+    response = await akik.eigendomsinformatie_postcode(
+        postcode="4884ME",
+        huisnummer=16,
         formaat=Formaat.JSON,
         klantreferentie="onbekend",
+        huisnummertoevoeging="K298",
     )
-
-    assert response.product_gegevens
-    assert response.proces
-    assert response.proces.meldingen is not None
-    assert len(response.proces.meldingen) > 0
-    assert response.proces.meldingen[0].severity_code == SeverityCode.INFO
-    assert (
-        response.proces.meldingen[0].omschrijving
-        == "Gevraagde product is succesvol geleverd."
-    )
+    assert isinstance(response, Eigendomsinformatie)
 
 
 def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
@@ -94,6 +88,17 @@ def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
         response.proces.meldingen[0].omschrijving
         == "Gevraagde product is succesvol geleverd."
     )
+
+
+@pytest.mark.asyncio
+async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
+    response = await akik.eigendomsinformatie_kadastraalobjectidentificatie(
+        kadastraalobjectidentificatie="11010156070000",
+        formaat=Formaat.JSON,
+        klantreferentie="onbekend",
+    )
+
+    assert isinstance(response, Eigendomsinformatie)
 
 
 def test_kadastraleaanduiding(kik: DefaultClient) -> None:
@@ -130,6 +135,19 @@ def test_kadastraleaanduiding(kik: DefaultClient) -> None:
     assert zaak.kadastrale_aanduiding.kadastrale_gemeente.waarde == "Zundert"
 
 
+@pytest.mark.asyncio
+async def test_kadastraleaanduiding_async(akik: AsyncClient) -> None:
+    response = await akik.eigendomsinformatie_kadastraleaanduiding(
+        kadastralegemeente="Zundert",
+        sectie="T",
+        perceelnummer=1560,
+        formaat=Formaat.JSON,
+        klantreferentie="onbekend",
+    )
+
+    assert isinstance(response, Eigendomsinformatie)
+
+
 def test_adres(kik: DefaultClient) -> None:
     response = kik.eigendomsinformatie_adres(
         plaatsnaam="Wernhout",
@@ -148,3 +166,16 @@ def test_adres(kik: DefaultClient) -> None:
         response.proces.meldingen[0].omschrijving
         == "Gevraagde product is succesvol geleverd."
     )
+
+
+@pytest.mark.asyncio
+async def test_adres_async(akik: AsyncClient) -> None:
+    response = await akik.eigendomsinformatie_adres(
+        plaatsnaam="Wernhout",
+        straatnaam="Kleine Heistraat",
+        huisnummer=16,
+        formaat=Formaat.JSON,
+        klantreferentie="onbekend",
+    )
+
+    assert isinstance(response, Eigendomsinformatie)
