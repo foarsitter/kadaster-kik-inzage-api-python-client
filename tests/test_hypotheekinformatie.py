@@ -1,26 +1,11 @@
 from typing import Optional
 
-import httpx
 import pytest
-from respx import MockRouter
 
 from kikinzage.client import AsyncClient
-from kikinzage.client import errors
 from kikinzage.client.default import DefaultClient
-from kikinzage.client.errors import KIKAuthenticationError
 from kikinzage.models import Formaat
 from kikinzage.models import SeverityCode
-
-
-def test_401() -> None:
-    kik = DefaultClient(username="", password="")  # nosec
-
-    with pytest.raises(KIKAuthenticationError):
-        kik.eigendomsinformatie_kadastraalobjectidentificatie(
-            kadastraalobjectidentificatie="",
-            formaat=Formaat.JSON,
-            klantreferentie="onbekend",
-        )
 
 
 @pytest.mark.parametrize(
@@ -29,7 +14,6 @@ def test_401() -> None:
         ("4884ME", 16, None, "K298"),
         ("1016AK", 402, "B", None),
         ("1012AR", 41, "C", None),
-        ("6301VK", 21, None, None),
     ],
 )
 def test_postcode(
@@ -39,7 +23,7 @@ def test_postcode(
     huisletter: Optional[str],
     huisnummertoevoeging: Optional[str],
 ) -> None:
-    response = kik.eigendomsinformatie_postcode(
+    response = kik.hypotheekinformatie_postcode(
         postcode=postcode,
         huisnummer=huisnummer,
         huisletter=huisletter,
@@ -48,7 +32,7 @@ def test_postcode(
         klantreferentie="onbekend",
     )
     assert response.proces
-    assert response.proces.severity_code == SeverityCode.INFO
+    assert response.proces.severity_code == SeverityCode.INFO, response.proces.meldingen
 
     assert response.product_gegevens
     assert response.product_gegevens.klantreferentie == "onbekend"
@@ -57,7 +41,7 @@ def test_postcode(
 
 
 def test_postcode_pdf(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_postcode(
+    response = kik.hypotheekinformatie_postcode(
         postcode="4884ME",
         huisnummer=16,
         formaat=Formaat.PDF,
@@ -75,27 +59,45 @@ def test_postcode_pdf(kik: DefaultClient) -> None:
 
 
 @pytest.mark.asyncio
-async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
-    async with akik as kik:
-        response = await kik.eigendomsinformatie_kadastraalobjectidentificatie(
-            kadastraalobjectidentificatie="11010156070000",
-            formaat=Formaat.JSON,
-            klantreferentie="onbekend",
-        )
+async def test_postcode_async(akik: AsyncClient) -> None:
+    response = await akik.hypotheekinformatie_postcode(
+        postcode="4884ME",
+        huisnummer=16,
+        formaat=Formaat.PDF,
+        klantreferentie="onbekend",
+        huisnummertoevoeging="K298",
+    )
+    assert response.proces
+    assert response.proces.severity_code == SeverityCode.INFO
 
-        assert response.product_gegevens
-        assert response.proces
-        assert response.proces.meldingen is not None
-        assert len(response.proces.meldingen) > 0
-        assert response.proces.meldingen[0].severity_code == SeverityCode.INFO
-        assert (
-            response.proces.meldingen[0].omschrijving
-            == "Gevraagde product is succesvol geleverd."
-        )
+    assert response.product_gegevens
+    assert response.product_gegevens.klantreferentie == "onbekend"
+
+    assert response.geleverd_product
+    assert response.geleverd_product.pdf is not None
 
 
 def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_kadastraalobjectidentificatie(
+    response = kik.hypotheekinformatie_kadastraalobjectidentificatie(
+        kadastraalobjectidentificatie="11010156070000",
+        formaat=Formaat.JSON,
+        klantreferentie="onbekend",
+    )
+
+    assert response.product_gegevens
+    assert response.proces
+    assert response.proces.meldingen is not None
+    assert len(response.proces.meldingen) > 0
+    assert response.proces.meldingen[0].severity_code == SeverityCode.INFO
+    assert (
+        response.proces.meldingen[0].omschrijving
+        == "Gevraagde product is succesvol geleverd."
+    )
+
+
+@pytest.mark.asyncio
+async def test_kadastraalobjectidentificatie_async(akik: AsyncClient) -> None:
+    response = await akik.hypotheekinformatie_kadastraalobjectidentificatie(
         kadastraalobjectidentificatie="11010156070000",
         formaat=Formaat.JSON,
         klantreferentie="onbekend",
@@ -113,7 +115,7 @@ def test_kadastraalobjectidentificatie(kik: DefaultClient) -> None:
 
 
 def test_kadastraleaanduiding(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_kadastraleaanduiding(
+    response = kik.hypotheekinformatie_kadastraleaanduiding(
         kadastralegemeente="Zundert",
         sectie="T",
         perceelnummer=1560,
@@ -146,21 +148,12 @@ def test_kadastraleaanduiding(kik: DefaultClient) -> None:
     assert zaak.kadastrale_aanduiding.kadastrale_gemeente.waarde == "Zundert"
 
 
-def test_invalid_json(kik: DefaultClient, respx_mock: MockRouter) -> None:
-    respx_mock.get() % httpx.Response(200, content="this is not valid")
-    with pytest.raises(errors.KIKRequestError):
-        kik.eigendomsinformatie_kadastraalobjectidentificatie(
-            kadastraalobjectidentificatie="11010156070000",
-            formaat=Formaat.JSON,
-            klantreferentie="onbekend",
-        )
-
-
-def test_adres(kik: DefaultClient) -> None:
-    response = kik.eigendomsinformatie_adres(
-        plaatsnaam="Wernhout",
-        straatnaam="Kleine Heistraat",
-        huisnummer=16,
+@pytest.mark.asyncio
+async def test_kadastraleaanduiding_async(akik: AsyncClient) -> None:
+    response = await akik.hypotheekinformatie_kadastraleaanduiding(
+        kadastralegemeente="Zundert",
+        sectie="T",
+        perceelnummer=1560,
         formaat=Formaat.JSON,
         klantreferentie="onbekend",
     )
@@ -174,3 +167,17 @@ def test_adres(kik: DefaultClient) -> None:
         response.proces.meldingen[0].omschrijving
         == "Gevraagde product is succesvol geleverd."
     )
+    assert response.geleverd_product
+    assert response.geleverd_product.product
+    assert response.geleverd_product.product.met
+    assert response.geleverd_product.product.met.onroerende_zaken
+    assert len(response.geleverd_product.product.met.onroerende_zaken) > 0
+
+    zaak = response.geleverd_product.product.met.onroerende_zaken[0]
+
+    assert zaak
+    assert zaak.kadastrale_aanduiding
+    assert zaak.kadastrale_aanduiding.kadastrale_gemeente
+    assert zaak.kadastrale_aanduiding.kadastrale_gemeente.waarde
+
+    assert zaak.kadastrale_aanduiding.kadastrale_gemeente.waarde == "Zundert"
