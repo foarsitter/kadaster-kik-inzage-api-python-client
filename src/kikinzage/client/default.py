@@ -140,3 +140,130 @@ class DefaultClient(KikinzageBaseClient):
         )
 
         return self.send(request, models.Eigendomsinformatie)
+
+    def hypotheekinformatie_kadastraalobjectidentificatie(
+        self,
+        kadastraalobjectidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Hypotheekinformatie:
+        request = self.request_hypotheekinformatie_kadastraalobjectidentificatie(
+            kadastraalobjectidentificatie=kadastraalobjectidentificatie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.Hypotheekinformatie)
+
+    def hypotheekinformatie_kadastraleaanduiding(
+        self,
+        kadastralegemeente: str,
+        sectie: str,
+        perceelnummer: int,
+        appartementsrecht_volgnummer: Optional[int] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Hypotheekinformatie:
+        request = self.request_hypotheekinformatie_kadastraleaanduiding(
+            kadastralegemeente=kadastralegemeente,
+            sectie=sectie,
+            perceelnummer=perceelnummer,
+            appartementsrecht_volgnummer=appartementsrecht_volgnummer,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.Hypotheekinformatie)
+
+    def hypotheekinformatie_postcode(
+        self,
+        postcode: str,
+        huisnummer: int,
+        huisletter: Optional[str] = None,
+        huisnummertoevoeging: Optional[str] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Hypotheekinformatie:
+        request = self.request_hypotheekinformatie_postcode(
+            postcode=postcode,
+            huisnummer=huisnummer,
+            huisletter=huisletter,
+            huisnummertoevoeging=huisnummertoevoeging,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.Hypotheekinformatie)
+
+    def eigenaarsinformatie_burgerservicenummer(
+        self,
+        burgerservicenummer: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Eigenaarsinformatie:
+        request = self.request_eigenaarsinformatie_burgerservicenummer(
+            burgerservicenummer=burgerservicenummer,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.Eigenaarsinformatie)
+
+    def eigenaarsinformatie_kadastraalpersoonidentificatie(
+        self,
+        kadastraalpersoonidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Eigenaarsinformatie:
+        request = self.request_eigenaarsinformatie_kadastraalpersoonidentificatie(
+            kadastraalpersoonidentificatie=kadastraalpersoonidentificatie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.Eigenaarsinformatie)

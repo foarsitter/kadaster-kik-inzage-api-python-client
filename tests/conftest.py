@@ -1,6 +1,8 @@
 import os
+from typing import AsyncIterator
 
 import pytest
+import pytest_asyncio
 
 from kikinzage.client import AsyncClient
 from kikinzage.client.default import DefaultClient
@@ -19,11 +21,12 @@ def kik() -> DefaultClient:
     return DefaultClient(
         username=username,
         password=password,
+        klantreferentie="test",
     )
 
 
-@pytest.fixture
-def akik() -> AsyncClient:
+@pytest_asyncio.fixture(scope="function")
+async def akik() -> AsyncIterator[AsyncClient]:
     password = os.getenv("KIK_PASSWORD")
     username = os.getenv("KIK_USERNAME")
 
@@ -32,7 +35,11 @@ def akik() -> AsyncClient:
             "KIK_PASSWORD and KIK_USERNAME environment variables must be set"
         )
 
-    return AsyncClient(
+    c = AsyncClient(
         username=username,
         password=password,
+        klantreferentie="test",
     )
+
+    async with c as kik:
+        yield kik

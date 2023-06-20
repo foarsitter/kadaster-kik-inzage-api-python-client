@@ -15,7 +15,7 @@ from httpx._client import UseClientDefault
 from ..models import ResponseType
 from ..models.enum import Formaat
 from . import errors
-from .utils import kwargs_as_params
+from .utils import remove_optional_params
 
 
 class KikinzageBaseClient(ABC):
@@ -62,6 +62,20 @@ class KikinzageBaseClient(ABC):
 
     def create_client(self, **httpx_kwargs: Any) -> BaseClient:
         raise NotImplementedError
+
+    def _create_params(
+        self,
+        formaat: Union[Formaat, UseClientDefault],
+        klantreferentie: Union[str, UseClientDefault],
+        **optionals: Any,
+    ) -> Dict[str, Any]:
+        params: Dict[str, Any] = {
+            "formaat": self._get_formaat(formaat),
+            "klantreferentie": self._get_klantreferentie(klantreferentie),
+        }
+        params.update(remove_optional_params(**optionals))
+
+        return params
 
     def process_response(
         self,
@@ -130,19 +144,14 @@ class KikinzageBaseClient(ABC):
         inkoopnummer: Optional[str] = None,
         referentienummer: Optional[str] = None,
     ) -> Request:
-        params: Dict[str, Any] = {
-            "formaat": self._get_formaat(formaat),
-            "klantreferentie": self._get_klantreferentie(klantreferentie),
-        }
-
-        params.update(
-            kwargs_as_params(
-                appartementsrechtVolgnummer=appartementsrecht_volgnummer,
-                gebruikeridentificatie=gebruikeridentificatie,
-                hyperlinkopproduct=hyperlinkopproduct,
-                inkoopnummer=inkoopnummer,
-                referentienummer=referentienummer,
-            )
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            appartementsrechtVolgnummer=appartementsrecht_volgnummer,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
         )
 
         request = self.client.build_request(
@@ -165,20 +174,13 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         """GET /eigendomsinformatie/kadastraalobjectidentificatie/{kadastraalobjectidentificatie}"""
-
-        params: Dict[str, Any] = {
-            "formaat": self._get_formaat(formaat),
-            "klantreferentie": self._get_klantreferentie(klantreferentie),
-        }
-
-        params.update(
-            kwargs_as_params(
-                gebruikeridentificatie=gebruikeridentificatie
-                or self.gebruikeridentificatie,
-                hyperlinkopproduct=hyperlinkopproduct or self.hyperlinkopproduct,
-                inkoopnummer=inkoopnummer or self.inkoopnummer,
-                referentienummer=referentienummer or self.referentienummer,
-            )
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
         )
 
         request = self.client.build_request(
@@ -204,28 +206,23 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         """GET /eigendomsinformatie/postcode/{postcode}/{huisnummer}"""
-        params: Dict[str, Any] = {
-            "formaat": self._get_formaat(formaat),
-            "klantreferentie": self._get_klantreferentie(klantreferentie),
-        }
-
-        params.update(
-            kwargs_as_params(
-                huisletter=huisletter,
-                huisnummertoevoeging=huisnummertoevoeging,
-                gebruikeridentificatie=gebruikeridentificatie,
-                hyperlinkopproduct=hyperlinkopproduct,
-                inkoopnummer=inkoopnummer,
-                referentienummer=referentienummer,
-            )
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            huisletter=huisletter,
+            huisnummertoevoeging=huisnummertoevoeging,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
         )
 
-        response = self.client.build_request(
+        request = self.client.build_request(
             method="GET",
             url=f"eigendomsinformatie/postcode/{postcode}/{huisnummer}",
             params=params,
         )
-        return response
+        return request
 
     def request_eigendomsinformatie_adres(
         self,
@@ -241,13 +238,152 @@ class KikinzageBaseClient(ABC):
         inkoopnummer: Optional[str] = None,
         referentienummer: Optional[str] = None,
     ) -> Request:
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            huisletter=huisletter,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"eigendomsinformatie/adres/{plaatsnaam}/{straatnaam}/{huisnummer}",
+            params=params,
+        )
+
+    def request_hypotheekinformatie_kadastraalobjectidentificatie(
+        self,
+        kadastraalobjectidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"hypotheekinformatie/kadastraalobjectidentificatie/{kadastraalobjectidentificatie}",
+            params=params,
+        )
+
+    def request_hypotheekinformatie_kadastraleaanduiding(
+        self,
+        kadastralegemeente: str,
+        sectie: str,
+        perceelnummer: int,
+        appartementsrecht_volgnummer: Optional[int] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            appartementsrechtVolgnummer=appartementsrecht_volgnummer,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"hypotheekinformatie/kadastraleaanduiding/{kadastralegemeente}/{sectie}/{perceelnummer}",
+            params=params,
+        )
+
+    def request_hypotheekinformatie_postcode(
+        self,
+        postcode: str,
+        huisnummer: int,
+        huisletter: Optional[str] = None,
+        huisnummertoevoeging: Optional[str] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            huisletter=huisletter,
+            huisnummertoevoeging=huisnummertoevoeging,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"hypotheekinformatie/postcode/{postcode}/{huisnummer}",
+            params=params,
+        )
+
+    def request_eigenaarsinformatie_kadastraalpersoonidentificatie(
+        self,
+        kadastraalpersoonidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"eigenaarsinformatie/kadastraalpersoonidentificatie/{kadastraalpersoonidentificatie}",
+            params=params,
+        )
+
+    def request_eigenaarsinformatie_burgerservicenummer(
+        self,
+        burgerservicenummer: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
         params: Dict[str, Any] = {
             "formaat": self._get_formaat(formaat),
             "klantreferentie": self._get_klantreferentie(klantreferentie),
         }
         params.update(
-            kwargs_as_params(
-                huisletter=huisletter,
+            remove_optional_params(
                 gebruikeridentificatie=gebruikeridentificatie,
                 hyperlinkopproduct=hyperlinkopproduct,
                 inkoopnummer=inkoopnummer,
@@ -255,10 +391,8 @@ class KikinzageBaseClient(ABC):
             )
         )
 
-        request = self.client.build_request(
+        return self.client.build_request(
             method="GET",
-            url=f"eigendomsinformatie/adres/{plaatsnaam}/{straatnaam}/{huisnummer}",
+            url=f"eigenaarsinformatie/burgerservicenummer/{burgerservicenummer}",
             params=params,
         )
-
-        return request
