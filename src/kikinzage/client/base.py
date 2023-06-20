@@ -396,3 +396,59 @@ class KikinzageBaseClient(ABC):
             url=f"eigenaarsinformatie/burgerservicenummer/{burgerservicenummer}",
             params=params,
         )
+
+    def request_objectlijstpersoon_kadastraalpersoonidentificatie(
+        self,
+        kadastraalpersoonidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat,
+            klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"objectlijstpersoon/kadastraalpersoonidentificatie/{kadastraalpersoonidentificatie}",
+            params=params,
+        )
+
+    def request_objectlijstpersoon_burgerservicenummer(
+        self,
+        burgerservicenummer: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params: Dict[str, Any] = {
+            "formaat": self._get_formaat(formaat),
+            "klantreferentie": self._get_klantreferentie(klantreferentie),
+        }
+        params.update(
+            remove_optional_params(
+                gebruikeridentificatie=gebruikeridentificatie,
+                hyperlinkopproduct=hyperlinkopproduct,
+                inkoopnummer=inkoopnummer,
+                referentienummer=referentienummer,
+            )
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"objectlijstpersoon/burgerservicenummer/{burgerservicenummer}",
+            params=params,
+        )
