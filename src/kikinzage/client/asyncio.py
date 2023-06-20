@@ -280,3 +280,49 @@ class AsyncClient(KikinzageBaseClient):
         )
 
         return await self.send(request, models.Eigendomsinformatie)
+
+    async def objectlijstpersoon_burgerservicenummer(
+        self,
+        burgerservicenummer: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.ObjectlijstPersoon:
+        request = self.request_objectlijstpersoon_burgerservicenummer(
+            burgerservicenummer=burgerservicenummer,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return await self.send(request, models.ObjectlijstPersoon)
+
+    async def objectlijstpersoon_kadastraalpersoonidentificatie(
+        self,
+        kadastraalpersoonidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.ObjectlijstPersoon:
+        request = self.request_objectlijstpersoon_kadastraalpersoonidentificatie(
+            kadastraalpersoonidentificatie=kadastraalpersoonidentificatie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return await self.send(request, models.ObjectlijstPersoon)
