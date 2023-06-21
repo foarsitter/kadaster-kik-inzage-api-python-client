@@ -419,3 +419,20 @@ class DefaultClient(KikinzageBaseClient):
         )
 
         return self.send(request, models.KadastraleKaart)
+
+    def datuminformatie(
+        self,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        *,
+        gebruikeridentificatie: Optional[str] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Datuminformatie:
+        request = self.request_datuminformatie(
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.Datuminformatie)
