@@ -27,7 +27,9 @@ def test_abstract_client_factory() -> None:
         KikinzageBaseClient("", "")
 
 
-def test_401() -> None:
+def test_401(respx_mock: MockRouter) -> None:
+    respx_mock.get() % httpx.Response(401, content="this is not valid")
+
     kik = DefaultClient(username="", password="")  # nosec
 
     with pytest.raises(KIKAuthenticationError):
@@ -42,7 +44,7 @@ def test_invalid_json(kik: DefaultClient, respx_mock: MockRouter) -> None:
     respx_mock.get() % httpx.Response(200, content="this is not valid")
     with pytest.raises(errors.KIKRequestError):
         kik.eigendomsinformatie_kadastraalobjectidentificatie(
-            kadastraalobjectidentificatie="11010156070000",
+            kadastraalobjectidentificatie="11010156070000aaaa",
             formaat=Formaat.JSON,
             klantreferentie="onbekend",
         )
