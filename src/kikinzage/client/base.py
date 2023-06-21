@@ -475,3 +475,95 @@ class KikinzageBaseClient(ABC):
             url=f"brondocument/deelennummer/{soort_register}/{register_code}/{deel}/{nummer}",
             params=params,
         )
+
+    def request_kadastralekaart_kadastraalobjectidentificatie(
+        self,
+        kadastraalobjectidentificatie: str,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        request = self.client.build_request(
+            method="GET",
+            url=f"kadastralekaart/kadastraalobjectidentificatie/{kadastraalobjectidentificatie}",
+            params=params,
+        )
+
+        return request
+
+    def request_kadastralekaart_kadastraleaanduiding(
+        self,
+        kadastralegemeente: str,
+        sectie: str,
+        perceelnummer: int,
+        appartementsrecht_volgnummer: Optional[int] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            appartementsrechtVolgnummer=appartementsrecht_volgnummer,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        request = self.client.build_request(
+            method="GET",
+            url=f"/kadastralekaart/kadastraleaanduiding/{kadastralegemeente}/{sectie}/{perceelnummer}",
+            params=params,
+        )
+
+        return request
+
+    def request_kadastralekaart_postcode(
+        self,
+        postcode: str,
+        huisnummer: int,
+        huisletter: Optional[str] = None,
+        huisnummertoevoeging: Optional[str] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            huisletter=huisletter,
+            huisnummertoevoeging=huisnummertoevoeging,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        request = self.client.build_request(
+            method="GET",
+            url=f"kadastralekaart/postcode/{postcode}/{huisnummer}",
+            params=params,
+        )
+        return request
