@@ -340,3 +340,82 @@ class DefaultClient(KikinzageBaseClient):
         )
 
         return self.send(request, models.Brondocument)
+
+    def kadastralekaart_kadastraalobjectidentificatie(
+        self,
+        kadastraalobjectidentificatie: str,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.KadastraleKaart:
+        request = self.request_kadastralekaart_kadastraalobjectidentificatie(
+            kadastraalobjectidentificatie=kadastraalobjectidentificatie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.KadastraleKaart)
+
+    def kadastralekaart_kadastraleaanduiding(
+        self,
+        kadastralegemeente: str,
+        sectie: str,
+        perceelnummer: int,
+        appartementsrecht_volgnummer: Optional[int] = None,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.KadastraleKaart:
+        request = self.request_kadastralekaart_kadastraleaanduiding(
+            kadastralegemeente=kadastralegemeente,
+            sectie=sectie,
+            perceelnummer=perceelnummer,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            appartementsrecht_volgnummer=appartementsrecht_volgnummer,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.KadastraleKaart)
+
+    def kadastralekaart_postcode(
+        self,
+        postcode: str,
+        huisnummer: int,
+        huisletter: Optional[str] = None,
+        huisnummertoevoeging: Optional[str] = None,
+        *,
+        formaat: Union[Formaat, UseClientDefault] = USE_CLIENT_DEFAULT,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.KadastraleKaart:
+        request = self.request_kadastralekaart_postcode(
+            postcode=postcode,
+            huisnummer=huisnummer,
+            huisletter=huisletter,
+            huisnummertoevoeging=huisnummertoevoeging,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.KadastraleKaart)
