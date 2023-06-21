@@ -1,6 +1,7 @@
 """Test cases for the __main__ module."""
 import pytest
 from click.testing import CliRunner
+from respx import MockRouter
 
 from kikinzage import __main__
 
@@ -17,7 +18,7 @@ def test_main_succeeds(runner: CliRunner) -> None:
     assert result.exit_code == 0
 
 
-def test_postcode_succeeds(runner: CliRunner) -> None:
+def test_postcode_succeeds(respx_mock: MockRouter, runner: CliRunner) -> None:
     """It exits with a status code of zero."""
     result = runner.invoke(
         __main__.eigendomsinformatie, ["test.json", "postcode", "4884ME", "16"]
