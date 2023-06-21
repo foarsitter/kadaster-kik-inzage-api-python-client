@@ -1,3 +1,4 @@
+import datetime
 from typing import Any
 from typing import Optional
 from typing import Type
@@ -436,3 +437,28 @@ class DefaultClient(KikinzageBaseClient):
         )
 
         return self.send(request, models.Datuminformatie)
+
+    def kadastraalpersoonidentificatie_persoonsgegevens(
+        self,
+        geslachtsnaam: str,
+        voornamen: str,
+        geboortedatum: datetime.date,
+        voorvoegselsgeslachtsnaam: Optional[str] = None,
+        *,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.KadastraalPersoonIdentificatie:
+        request = self.request_kadastraalpersoonidentificatie_persoonsgegevens(
+            geslachtsnaam=geslachtsnaam,
+            voornamen=voornamen,
+            geboortedatum=geboortedatum,
+            voorvoegselsgeslachtsnaam=voorvoegselsgeslachtsnaam,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.send(request, models.KadastraalPersoonIdentificatie)

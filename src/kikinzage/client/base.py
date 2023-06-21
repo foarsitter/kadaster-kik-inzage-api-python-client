@@ -1,3 +1,4 @@
+import datetime
 from abc import ABC
 from json import JSONDecodeError
 from typing import Any
@@ -586,5 +587,31 @@ class KikinzageBaseClient(ABC):
         return self.client.build_request(
             method="GET",
             url="datuminformatie",
+            params=params,
+        )
+
+    def request_kadastraalpersoonidentificatie_persoonsgegevens(
+        self,
+        geslachtsnaam: str,
+        voornamen: str,
+        geboortedatum: datetime.date,
+        voorvoegselsgeslachtsnaam: Optional[str] = None,
+        *,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            voorvoegselsgeslachtsnaam=voorvoegselsgeslachtsnaam,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"kadastraalpersoonidentificatie/persoonsgegevens/{geslachtsnaam}/{voornamen}/{geboortedatum.isoformat()}",
             params=params,
         )
