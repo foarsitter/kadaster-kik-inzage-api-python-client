@@ -65,14 +65,17 @@ class KikinzageBaseClient(ABC):
 
     def _create_params(
         self,
-        formaat: Union[Formaat, UseClientDefault],
-        klantreferentie: Union[str, UseClientDefault],
+        formaat: Union[Formaat, UseClientDefault] = None,
+        klantreferentie: Union[str, UseClientDefault] = None,
         **optionals: Any,
     ) -> Dict[str, Any]:
-        params: Dict[str, Any] = {
-            "formaat": self._get_formaat(formaat),
-            "klantreferentie": self._get_klantreferentie(klantreferentie),
-        }
+        params: Dict[str, Any] = {}
+
+        if formaat:
+            params["formaat"] = self._get_formaat(formaat)
+
+        params["klantreferentie"] = self._get_klantreferentie(klantreferentie)
+
         params.update(remove_optional_params(**optionals))
 
         return params
@@ -450,5 +453,32 @@ class KikinzageBaseClient(ABC):
         return self.client.build_request(
             method="GET",
             url=f"objectlijstpersoon/burgerservicenummer/{burgerservicenummer}",
+            params=params,
+        )
+
+    def request_brondocument(
+        self,
+        soort_register: str,
+        register_code: str,
+        deel: str,
+        nummer: str,
+        *,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url=f"brondocument/deelennummer/{soort_register}/{register_code}/{deel}/{nummer}",
             params=params,
         )

@@ -326,3 +326,30 @@ class AsyncClient(KikinzageBaseClient):
         )
 
         return await self.send(request, models.ObjectlijstPersoon)
+
+    async def brondocument(
+        self,
+        soort_register: str,
+        register_code: str,
+        deel: str,
+        nummer: str,
+        *,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        gebruikeridentificatie: Optional[str] = None,
+        hyperlinkopproduct: Optional[bool] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> models.Brondocument:
+        request = self.request_brondocument(
+            soort_register=soort_register,
+            register_code=register_code,
+            deel=deel,
+            nummer=nummer,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return await self.send(request, models.Brondocument)
