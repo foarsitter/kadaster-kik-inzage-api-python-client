@@ -65,8 +65,9 @@ class KikinzageBaseClient(ABC):
 
     def _create_params(
         self,
-        formaat: Union[Formaat, UseClientDefault] = None,
-        klantreferentie: Union[str, UseClientDefault] = None,
+        *,
+        klantreferentie: Union[str, UseClientDefault],
+        formaat: Optional[Union[Formaat, UseClientDefault]] = None,
         **optionals: Any,
     ) -> Dict[str, Any]:
         params: Dict[str, Any] = {}
@@ -148,8 +149,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             appartementsrechtVolgnummer=appartementsrecht_volgnummer,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
@@ -178,8 +179,8 @@ class KikinzageBaseClient(ABC):
     ) -> Request:
         """GET /eigendomsinformatie/kadastraalobjectidentificatie/{kadastraalobjectidentificatie}"""
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
             inkoopnummer=inkoopnummer,
@@ -210,8 +211,8 @@ class KikinzageBaseClient(ABC):
     ) -> Request:
         """GET /eigendomsinformatie/postcode/{postcode}/{huisnummer}"""
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             huisletter=huisletter,
             huisnummertoevoeging=huisnummertoevoeging,
             gebruikeridentificatie=gebruikeridentificatie,
@@ -242,8 +243,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             huisletter=huisletter,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
@@ -269,8 +270,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
             inkoopnummer=inkoopnummer,
@@ -298,8 +299,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             appartementsrechtVolgnummer=appartementsrecht_volgnummer,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
@@ -328,8 +329,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             huisletter=huisletter,
             huisnummertoevoeging=huisnummertoevoeging,
             gebruikeridentificatie=gebruikeridentificatie,
@@ -356,8 +357,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
             inkoopnummer=inkoopnummer,
@@ -381,17 +382,13 @@ class KikinzageBaseClient(ABC):
         inkoopnummer: Optional[str] = None,
         referentienummer: Optional[str] = None,
     ) -> Request:
-        params: Dict[str, Any] = {
-            "formaat": self._get_formaat(formaat),
-            "klantreferentie": self._get_klantreferentie(klantreferentie),
-        }
-        params.update(
-            remove_optional_params(
-                gebruikeridentificatie=gebruikeridentificatie,
-                hyperlinkopproduct=hyperlinkopproduct,
-                inkoopnummer=inkoopnummer,
-                referentienummer=referentienummer,
-            )
+        params = self._create_params(
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
         )
 
         return self.client.build_request(
@@ -412,8 +409,8 @@ class KikinzageBaseClient(ABC):
         referentienummer: Optional[str] = None,
     ) -> Request:
         params = self._create_params(
-            formaat,
-            klantreferentie,
+            formaat=formaat,
+            klantreferentie=klantreferentie,
             gebruikeridentificatie=gebruikeridentificatie,
             hyperlinkopproduct=hyperlinkopproduct,
             inkoopnummer=inkoopnummer,
@@ -437,17 +434,13 @@ class KikinzageBaseClient(ABC):
         inkoopnummer: Optional[str] = None,
         referentienummer: Optional[str] = None,
     ) -> Request:
-        params: Dict[str, Any] = {
-            "formaat": self._get_formaat(formaat),
-            "klantreferentie": self._get_klantreferentie(klantreferentie),
-        }
-        params.update(
-            remove_optional_params(
-                gebruikeridentificatie=gebruikeridentificatie,
-                hyperlinkopproduct=hyperlinkopproduct,
-                inkoopnummer=inkoopnummer,
-                referentienummer=referentienummer,
-            )
+        params = self._create_params(
+            formaat=formaat,
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            hyperlinkopproduct=hyperlinkopproduct,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
         )
 
         return self.client.build_request(
