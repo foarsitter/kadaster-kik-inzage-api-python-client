@@ -1,4 +1,6 @@
+import asyncio
 import os
+import time
 from typing import AsyncIterator
 
 import pytest
@@ -17,6 +19,9 @@ def kik() -> DefaultClient:
         raise Exception(
             "KIK_PASSWORD and KIK_USERNAME environment variables must be set"
         )
+
+    # take some breath to avoid getting blocked by the server
+    time.sleep(1)
 
     return DefaultClient(
         username=username,
@@ -42,4 +47,7 @@ async def akik() -> AsyncIterator[AsyncClient]:
     )
 
     async with c as kik:
+        # take some breath to avoid getting blocked by the server
+        await asyncio.sleep(1)
+
         yield kik
