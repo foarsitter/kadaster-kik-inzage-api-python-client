@@ -567,3 +567,24 @@ class KikinzageBaseClient(ABC):
             params=params,
         )
         return request
+
+    def request_datuminformatie(
+        self,
+        klantreferentie: Union[str, UseClientDefault] = USE_CLIENT_DEFAULT,
+        *,
+        gebruikeridentificatie: Optional[str] = None,
+        inkoopnummer: Optional[str] = None,
+        referentienummer: Optional[str] = None,
+    ) -> Request:
+        params = self._create_params(
+            klantreferentie=klantreferentie,
+            gebruikeridentificatie=gebruikeridentificatie,
+            inkoopnummer=inkoopnummer,
+            referentienummer=referentienummer,
+        )
+
+        return self.client.build_request(
+            method="GET",
+            url="datuminformatie",
+            params=params,
+        )
