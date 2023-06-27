@@ -4,7 +4,7 @@ from kikinzage.models import ObjectlocatieBuitenland
 from kikinzage.models import PostbusLocatie
 
 
-def test_collection() -> None:
+def test_collection_with_adres_locaties() -> None:
     c = Collectie()
     c.adres_locaties = [
         ObjectlocatieBinnenland(),

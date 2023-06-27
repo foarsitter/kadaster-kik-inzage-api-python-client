@@ -8,6 +8,7 @@ from typing import Iterator
 import pytest
 import pytest_asyncio
 import respx
+from _pytest.fixtures import FixtureRequest
 from httpx import Response
 
 from kikinzage.client import AsyncClient
@@ -45,9 +46,11 @@ mock_responses()
 
 
 @pytest.fixture
-def kik() -> Iterator[DefaultClient]:
+def kik(request: FixtureRequest) -> Iterator[DefaultClient]:
     password = os.getenv("KIK_PASSWORD")
     username = os.getenv("KIK_USERNAME")
+
+    live_marker = request.node.get_closest_marker("live")
 
     if not password or not username:  # pragma: no cover
         raise Exception(
@@ -63,17 +66,19 @@ def kik() -> Iterator[DefaultClient]:
     if MOCK_USE is False and MOCK_SAFE is True:  # pragma: no cover
         httpx_kwargs["event_hooks"] = {"response": [write_response]}
 
-    if MOCK_USE:
+    if MOCK_USE and not live_marker:
         with respx.mock:
             yield DefaultClient(**httpx_kwargs)
     else:
-        yield DefaultClient(**httpx_kwargs)  # pragma: no cover
+        yield DefaultClient(**httpx_kwargs)
 
 
 @pytest_asyncio.fixture(scope="function")
-async def akik() -> AsyncIterator[AsyncClient]:
+async def akik(request: FixtureRequest) -> AsyncIterator[AsyncClient]:
     password = os.getenv("KIK_PASSWORD")
     username = os.getenv("KIK_USERNAME")
+
+    live_marker = request.node.get_closest_marker("live")
 
     if not password or not username:  # pragma: no cover
         raise Exception(
@@ -90,7 +95,7 @@ async def akik() -> AsyncIterator[AsyncClient]:
     if MOCK_SAFE:  # pragma: no cover
         raise Exception("Cannot use event_hooks in async context")
 
-    if MOCK_USE:
+    if MOCK_USE and not live_marker:
         with respx.mock:
             async with c as kik:
                 yield kik
