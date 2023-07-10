@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "kadaster-kikinzage-client"
-version = "0.2.0"
+version = "0.3.0"
 description = " Kadaster - KIK Inzage API Python client"
 authors = ["Jelmer Draaijer <info@jelmert.nl>"]
 license = "MIT"
