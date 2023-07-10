@@ -21,7 +21,7 @@ Changelog = "https://github.com/foarsitter/kadaster-kik-inzage-api-python-client
 [tool.poetry.dependencies]
 python = ">=3.8.1"
 click = ">=8.0.1"
-pydantic = ">=2.0a1"
+pydantic = ">=2.0.1"
 httpx = ">=0.24.1"
 typing-extensions = "^4.6.3"
 
