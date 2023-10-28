@@ -18,4 +18,4 @@ updates:
       interval: weekly
     versioning-strategy: lockfile-only
     allow:
-      - dependency-type: "production"
+      - dependency-type: "indirect"
