@@ -48,9 +48,9 @@ class Kadasterstuk(FieldStuk):
 
 
 class TerInschrijvingAangebodenStuk(FieldStuk):
-    type: Literal[
+    type: Literal[StukTypeEnum.TER_INSCHRIJVING_AANGEBODEN_STUK] = (
         StukTypeEnum.TER_INSCHRIJVING_AANGEBODEN_STUK
-    ] = StukTypeEnum.TER_INSCHRIJVING_AANGEBODEN_STUK
+    )
     aard: Optional[Waardelijst] = None
     deel_en_nummer: Optional[TypeDeelEnNummer] = Field(None, alias="deelEnNummer")
     heeft_kadaster_verzoek: Optional[bool] = Field(None, alias="heeftKadasterVerzoek")

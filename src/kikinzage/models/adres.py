@@ -61,23 +61,23 @@ class FieldAdresLocatie(BaseModel):
 
 
 class ObjectlocatieBinnenland(FieldAdresLocatie):
-    type: Literal[
+    type: Literal[AdresLocatieTypeEnum.OBJECTLOCATIE_BINNENLAND] = (
         AdresLocatieTypeEnum.OBJECTLOCATIE_BINNENLAND
-    ] = AdresLocatieTypeEnum.OBJECTLOCATIE_BINNENLAND
+    )
     nummeraanduiding: Optional[Nummeraanduiding] = None
 
 
 class ObjectlocatieBuitenland(FieldAdresLocatie):
-    type: Literal[
+    type: Literal[AdresLocatieTypeEnum.OBJECTLOCATIE_BUITENLAND] = (
         AdresLocatieTypeEnum.OBJECTLOCATIE_BUITENLAND
-    ] = AdresLocatieTypeEnum.OBJECTLOCATIE_BUITENLAND
+    )
     adres_buitenland: Optional[AdresBuitenland] = Field(None, alias="adresBuitenland")
 
 
 class PostbusLocatie(FieldAdresLocatie):
-    type: Literal[
+    type: Literal[AdresLocatieTypeEnum.POSTBUS_LOCATIE] = (
         AdresLocatieTypeEnum.POSTBUS_LOCATIE
-    ] = AdresLocatieTypeEnum.POSTBUS_LOCATIE
+    )
     postbusnummer: Optional[int] = None
     postcode: Optional[TypePostcode] = None
     woonplaats_naam: Optional[str] = Field(

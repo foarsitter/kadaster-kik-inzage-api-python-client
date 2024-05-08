@@ -81,9 +81,9 @@ class FieldPersoon(BaseModel):
 
 
 class NietNatuurlijkPersoon(FieldPersoon):
-    type: Literal[
+    type: Literal[PersoonTypeEnum.NIET_NATUURLIJK_PERSOON] = (
         PersoonTypeEnum.NIET_NATUURLIJK_PERSOON
-    ] = PersoonTypeEnum.NIET_NATUURLIJK_PERSOON
+    )
     rechtsvorm: Optional[Waardelijst] = None
     statutaire_naam: Optional[str] = Field(
         None, alias="statutaireNaam", max_length=200, min_length=1
@@ -95,9 +95,9 @@ class NietNatuurlijkPersoon(FieldPersoon):
 
 
 class NatuurlijkPersoon(FieldPersoon):
-    type: Literal[
+    type: Literal[PersoonTypeEnum.NATUURLIJK_PERSOON] = (
         PersoonTypeEnum.NATUURLIJK_PERSOON
-    ] = PersoonTypeEnum.NATUURLIJK_PERSOON
+    )
     indicatie_overleden: Optional[bool] = Field(None, alias="indicatieOverleden")
     betreft: Optional[GeregistreerdPersoon] = None
 

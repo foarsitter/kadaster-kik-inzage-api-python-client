@@ -131,9 +131,9 @@ class KadastraalPersoonIdentificatie(BaseModel):
     proces: Optional[ProcesVerwerking] = None
     product_gegevens: Optional[ProductGegevens] = Field(None, alias="productGegevens")
     geleverd_product: Optional[NEN3610ID] = Field(None, alias="geleverdProduct")
-    geleverd_product_kpi: Optional[
-        GeleverdProductKadastraalPersoonIdentificatie
-    ] = Field(None, alias="geleverdProductKPI")
+    geleverd_product_kpi: Optional[GeleverdProductKadastraalPersoonIdentificatie] = (
+        Field(None, alias="geleverdProductKPI")
+    )
 
 
 class TypeOppervlak(BaseModel):

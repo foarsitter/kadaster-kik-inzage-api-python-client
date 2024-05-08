@@ -226,12 +226,12 @@ class Collectie(BaseModel):
     )
     personen: Optional[List[PersoonType]] = None
     adres_locaties: Optional[List[AdresType]] = Field(None, alias="adresLocaties")
-    attendering_kadastraal_objecten: Optional[
-        List[AttenderingKadastraalObject]
-    ] = Field(None, alias="attenderingKadastraalObjecten")
-    signalering_kadastraal_objecten: Optional[
-        List[SignaleringKadastraalObject]
-    ] = Field(None, alias="signaleringKadastraalObjecten")
+    attendering_kadastraal_objecten: Optional[List[AttenderingKadastraalObject]] = (
+        Field(None, alias="attenderingKadastraalObjecten")
+    )
+    signalering_kadastraal_objecten: Optional[List[SignaleringKadastraalObject]] = (
+        Field(None, alias="signaleringKadastraalObjecten")
+    )
     stukdelen: Optional[List[Stukdeel]] = None
     stukken: Optional[List[FieldType]] = None
     verblijfsobjecten: Optional[List[Verblijfsobject]] = None

@@ -1,4 +1,5 @@
 """Sphinx configuration."""
+
 project = " Kadaster - KIK Inzage API Python client"
 author = "Jelmer Draaijer"
 copyright = "2023, Jelmer Draaijer"

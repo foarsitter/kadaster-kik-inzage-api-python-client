@@ -1,4 +1,5 @@
 """Command-line interface."""
+
 import json
 import os
 from json import JSONDecodeError
