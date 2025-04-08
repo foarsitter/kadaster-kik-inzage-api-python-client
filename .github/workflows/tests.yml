@@ -2,7 +2,7 @@ name: Tests
 
 on:
   push:
-    branches: [master]
+    branches: [ master ]
   pull_request:
 
 jobs:
@@ -165,3 +165,12 @@ jobs:
 
       - name: Upload coverage report
         uses: codecov/codecov-action@v5.4.0
+
+  auto-merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ahmadnassri/action-dependabot-auto-merge@v2
+        with:
+          target: minor
+          github-token: ${{ secrets.GITHUB_TOKEN }}
