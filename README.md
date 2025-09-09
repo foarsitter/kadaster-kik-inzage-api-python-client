@@ -105,3 +105,5 @@ This project was generated from [@cjolowicz]'s [Hypermodern Python Cookiecutter]
 [license]: https://github.com/foarsitter/kadaster-kik-inzage-api-python-client/blob/main/LICENSE
 [contributor guide]: https://github.com/foarsitter/kadaster-kik-inzage-api-python-client/blob/main/CONTRIBUTING.md
 [command-line reference]: https://kadaster-kik-inzage-api-python-client.readthedocs.io/en/latest/usage.html
+
+Changes...
